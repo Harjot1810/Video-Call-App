@@ -24,7 +24,7 @@ code {
   animation: load7 1.8s infinite ease-in-out;
 }
 .progress {
-  color: #334ccc;
+  color: #008080;
   font-size: 5px;
   margin: 8px auto;
   position: relative;

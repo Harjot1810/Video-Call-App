@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
+import './Initial/App.css';
 import Snackbar from '@material-ui/core/Snackbar';
 import Attendee from './Attendee';
 import AudioControl from './AudioControl';
 import VideoControl from './VideoControl';
 import { Paper, Grid } from "@material-ui/core";
-import ChatBox from './ChatBox';
 import CallEndIcon from '@material-ui/icons/CallEnd';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -27,6 +26,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Avatar from '@material-ui/core/Avatar';
+import ChatScreen from './Chat-Components/ChatScreen';
 
 class Room extends Component {
 
@@ -39,10 +39,6 @@ class Room extends Component {
         this.state = {
             attendeesList: Array.from(this.props.room.participants.values()), //Array of participants in room
             tracks: nonNullTracks,                                            //Track of local participant
-            chat: [{                                                           //For chatbox
-                id: '',
-                message: ''
-            }],
             audioOff: false,                                                  //Audio track's state of local participant
             videoOff: false,                                                  //Video track'state of local participant
             setChatOpen: false,
@@ -51,10 +47,8 @@ class Room extends Component {
             snackBarmessage: ''
         }
         this.disconnectCall = this.disconnectCall.bind(this);                 //binding this to disconnectCall()
-        this.sendMessage = this.sendMessage.bind(this);
         this.changeAudio = this.changeAudio.bind(this);
         this.changeVideo = this.changeVideo.bind(this);
-        this.pushMessage = this.pushMessage.bind(this);
         this.handleChatDrawer = this.handleChatDrawer.bind(this);
         this.handleAttendeesDialog = this.handleAttendeesDialog.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -68,19 +62,6 @@ class Room extends Component {
         this.props.room.on('participantDisconnected', attendee => this.disconnectAttendee(attendee));
         this.props.room.on('dominantSpeakerChanged', attendee => this.CurrentSpeaker(attendee));
         window.addEventListener("beforeunload", this.disconnectCall);
-    }
-
-    sendMessage(message) {
-        //Sending the message in chat box
-        const dataTrack = this.state.tracks.find(track => track.kind == "data");
-        dataTrack.send(message);
-        this.pushMessage(this.props.room.localParticipant.identity, message);
-        console.log(message);
-    }
-
-    pushMessage(id, message) {
-        //Update chat 
-        this.setState({ chat: [...this.state.chat, { id: id, message: message }] });
     }
 
     componentWillUnmount() {
@@ -251,6 +232,7 @@ class Room extends Component {
         return (
 
             <div className="room">
+
                 <CssBaseline />
 
                 <Grid id="appbar" style={styles.root}>
@@ -442,11 +424,7 @@ class Room extends Component {
 
                         <List>
                             {
-                                this.props.room.localParticipant
-                                    ? <ChatBox sendMessage={this.sendMessage}
-                                        chat={this.state.chat}
-                                        local={this.props.room.localParticipant.identity} />
-                                    : ''
+                                <ChatScreen room={this.props.roomName} email={this.props.room.localParticipant.identity} />
                             }
                         </List>
                     </div>

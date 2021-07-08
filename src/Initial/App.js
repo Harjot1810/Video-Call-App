@@ -1,6 +1,7 @@
 import './App.css';
 import React, { Component } from 'react';
-import Room from './Room';
+import Room from '../Room';
+import ChatScreen from '../Chat-Components/ChatScreen';
 import axios from 'axios';
 const { connect, LocalDataTrack } = require('twilio-video'); //Importing twilio-javascript SDK and Data API
 
@@ -12,15 +13,16 @@ class App extends Component {
         this.state = {
             isLoading: false,
             room: null,
-            roomName: ''
+            roomName: '',
+            go: false
         }
-
+        console.log(this.props.identity);
         this.nameField = React.createRef();              //creating Reference 
         this.connectCall = this.connectCall.bind(this);  //Invoked to connect to room
         this.backtoHome = this.backtoHome.bind(this);    //Invoked when call is diconnected
         this.changeState = this.changeState.bind(this);  //Change state of isLoading
         this.changeRoomID = this.changeRoomID.bind(this);//Change Room id when user enters room name
-
+        this.changeRoom = this.changeRoom.bind(this);
     }
 
     async connectCall() {
@@ -38,7 +40,8 @@ class App extends Component {
                 name: this.state.roomName,
                 audio: true,
                 video: true,
-                dominantSpeaker: true
+                dominantSpeaker: true,
+
             });
 
             //publishing a data track for chats
@@ -66,10 +69,19 @@ class App extends Component {
         });
     }
 
+    changeRoom() { //update isLoading state
+        this.setState({
+            go: true,
+
+        });
+        console.log(this.state.roomName);
+    }
+
     changeRoomID(event) { //update room when user has entered roomname
         this.setState({
             roomName: event.target.value
         });
+
     }
 
     render() {
@@ -77,25 +89,26 @@ class App extends Component {
         return (
             <div className="app">
                 {
-                    this.state.room === null
+                    this.state.go === true
                         ?
                         //if room state is null
+                        <ChatScreen room={this.state.roomName} email={this.props.identity} />
+
+
+                        : //if room state not null
                         <div className="home">
-                            <h4 className="mt-3">Fill the details for</h4>
+                            <h4 className="mt-3">Fill the code for</h4>
                             <h1 className="mt-2">Meeting Now!</h1>
                             <input
                                 value={this.state.roomName}
                                 onChange={this.changeRoomID}
                                 placeholder="Enter Room Name" />
-                            <button className="standard-button" disabled={disabled} onClick={this.connectCall}>Join Call</button>
+                            <button className="standard-button" disabled={disabled} onClick={this.changeRoom}>Join</button>
                             <br />
                             <button className="standard-button" onClick={e => this.props.logout(e)}>Logout</button>
                             <br />
                             {(this.state.isLoading === true) ? <div className="loader">Connecting</div> : <div></div>}
                         </div>
-
-                        : //if room state not null
-                        <Room key={this.state.room.localParticipant.identity} backtoHome={this.backtoHome} room={this.state.room} />
                 }
             </div>
         );
