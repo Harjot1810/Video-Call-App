@@ -4,6 +4,8 @@ import App from '../Initial/App';
 import { useStyles } from './Styles.js'
 import Signin from './Signin'
 import Signup from './Signup'
+import Logo from '../Logo.jpg'
+import Login from './login.png'
 import axios from 'axios';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
@@ -60,6 +62,10 @@ function Authentication(props) {
             {
                 (screen === false)
                     ? <div className={classes.root}>
+
+                        <div className={classes.logo}>
+                            <img src={Logo} height="100%" width="55%" />
+                        </div>
 
                         <ButtonBase
                             focusRipple

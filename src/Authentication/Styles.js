@@ -6,12 +6,18 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
         minWidth: 300,
         width: '100%',
-        marginTop: theme.spacing(25),
+        marginTop: theme.spacing(8),
         '& > *': {
             marginTop: theme.spacing(1),
             marginBottom: theme.spacing(2),
-            marginLeft: theme.spacing(45),
+            marginLeft: theme.spacing(100),
         },
+    },
+    logo: {
+        marginLeft: theme.spacing(120),
+        marginBottom: theme.spacing(12),
+        //height: "0%",
+        //width: "0%"
     },
     paper: {
         marginTop: theme.spacing(5),
@@ -35,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
     },
     mainbutton: {
         position: 'relative',
-        height: 125,
-        width: "55%",
+        height: 60,
+        width: "40%",
         [theme.breakpoints.down('xs')]: {
-            width: '100% !important', // Overrides inline-style
+            width: '100% !important',          // Overrides inline-style
             height: 100,
         },
         '&:hover, &$focus': {
@@ -87,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     },
     buttonTitle: {
         position: 'relative',
-        padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 6}px`,
+        padding: `${theme.spacing(0.5)}px ${theme.spacing(2)}px ${theme.spacing(0.25) + 3}px`,
     },
     buttonMarked: {
         height: 3,

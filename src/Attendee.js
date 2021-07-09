@@ -14,7 +14,10 @@ class Attendee extends Component {
 
         this.state = {
             tracks: nonNullTracks, //audio, video and data tracks of all the attendees
+            raiseHand: false
         }
+
+        this.changeraiseHand = this.changeraiseHand.bind(this);
 
     }
 
@@ -34,6 +37,13 @@ class Attendee extends Component {
         });
     }
 
+    changeraiseHand() {
+        const dataTrack = this.state.tracks.find(track => track.kind == "data");
+        dataTrack.send(!this.state.raiseHand);
+        this.setState({ raiseHand: !this.state.raiseHand });
+
+    }
+
     render() {
         const isDominantSpeaker = this.props.dominantSpeaker === this.props.attendee.identity ? 'dominantSpeaker' : '';
         return (
@@ -41,10 +51,16 @@ class Attendee extends Component {
             <div className={`attendee ${isDominantSpeaker}`} id={this.props.attendee.identity}>
                 <div className="identity">{this.props.attendee.identity}</div>
                 {
+                    this.props.localParticipant
+                        ? <div classname="raisehand"><button className="standard-button" onClick={this.state.changeraiseHand}>Raise hand</button></div>
+                        : ''
+                }
+                {
 
                     this.state.tracks.map(track =>
                         <Track key={track}
                             track={track}
+                            raiseHand={this.state.raiseHand}
                             local={this.props.localParticipant}
                             snackBar={this.props.snackBar}
                             changeSnackbarmessage={this.props.changeSnackbarmessage}

@@ -3,8 +3,8 @@ import { ListItem } from "@material-ui/core";
 
 class ChatItem extends React.Component {
     render() {
-        const { message, email } = this.props;
-        const isOwnMessage = message.author === email;
+        const { message, identity } = this.props;
+        const isOwnMessage = message.author === identity;
 
         return (
             <ListItem style={styles.listItem(isOwnMessage)}>
@@ -27,13 +27,14 @@ const styles = {
     }),
     container: (isOwnMessage) => ({
         maxWidth: "75%",
-        borderRadius: 12,
+        borderRadius: 5,
         padding: 16,
         color: "white",
-        fontSize: 12,
-        backgroundColor: isOwnMessage ? "#054740" : "#262d31",
+        fontSize: 14,
+        //opacity: 0.8,
+        backgroundColor: isOwnMessage ? "#778899" : "#a9a9a9",
     }),
-    author: { fontSize: 10, color: "gray" },
+    author: { fontSize: 12, color: "gray" },
     timestamp: { fontSize: 8, color: "white", textAlign: "right", paddingTop: 4 },
 };
 

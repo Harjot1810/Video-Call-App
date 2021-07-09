@@ -1,8 +1,20 @@
 import './App.css';
 import React, { Component } from 'react';
 import Room from '../Room';
+import Welcome from './Welcome'
 import ChatScreen from '../Chat-Components/ChatScreen';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/styles';
+import { styles } from './Styles.js'
 const { connect, LocalDataTrack } = require('twilio-video'); //Importing twilio-javascript SDK and Data API
 
 
@@ -13,21 +25,20 @@ class App extends Component {
         this.state = {
             isLoading: false,
             room: null,
-            roomName: '',
-            go: false
+            channelName: '',
+            proceed: false
         }
         console.log(this.props.identity);
         this.nameField = React.createRef();              //creating Reference 
         this.connectCall = this.connectCall.bind(this);  //Invoked to connect to room
         this.backtoHome = this.backtoHome.bind(this);    //Invoked when call is diconnected
         this.changeState = this.changeState.bind(this);  //Change state of isLoading
-        this.changeRoomID = this.changeRoomID.bind(this);//Change Room id when user enters room name
-        this.changeRoom = this.changeRoom.bind(this);
+        this.changeChannel = this.changeChannel.bind(this);//Change Room id when user enters room name
+        this.changeScreen = this.changeScreen.bind(this);    //change Room name
     }
 
     async connectCall() {
         try {
-
             this.setState({
                 isLoading: true,
             });
@@ -37,7 +48,7 @@ class App extends Component {
             const store = await signal.data;
             const token = store.accessToken;
             const room = await connect(store.accessToken, {
-                name: this.state.roomName,
+                name: this.state.channelName,
                 audio: true,
                 video: true,
                 dominantSpeaker: true,
@@ -54,7 +65,7 @@ class App extends Component {
         }
     }
 
-    backtoHome() { //invoked when user clicks Leave call button
+    backtoHome() {                          //invoked when user clicks Leave call button
         this.setState({ room: null });
         this.setState({
             isLoading: false,
@@ -62,57 +73,107 @@ class App extends Component {
     }
 
 
-    changeState() { //update isLoading state
+    changeState() {                         //update isLoading state
         this.setState({
             isLoading: true,
 
         });
     }
 
-    changeRoom() { //update isLoading state
+    changeScreen() {                          //update isLoading state
         this.setState({
-            go: true,
-
+            proceed: true,
         });
-        console.log(this.state.roomName);
     }
 
-    changeRoomID(event) { //update room when user has entered roomname
+    changeChannel(event) {                   //update room when user has entered roomname
         this.setState({
-            roomName: event.target.value
+            channelName: event.target.value
         });
 
     }
 
     render() {
-        const disabled = (this.state.roomName === '') ? true : false; //state of join button (disabled/enabled)
+        const { classes } = this.props;
+        const disabled = (this.state.channelName === '') ? true : false; //state of join button (disabled/enabled)
         return (
             <div className="app">
                 {
-                    this.state.go === true
-                        ?
-                        //if room state is null
-                        <ChatScreen room={this.state.roomName} email={this.props.identity} />
+                    this.state.room === null
+                        ? <div className={classes.root}>
+                            <CssBaseline />
 
+                            <Drawer
+                                className={classes.drawer}
+                                variant="permanent"
+                                classes={{ paper: classes.drawerPaper }}
+                                anchor="left"
+                            >
+                                <List>
+                                    <Avatar className={classes.avatar}>
+                                        {this.props.identity.charAt(0)}
+                                    </Avatar>
+                                    <h2>{this.props.identity}</h2>
+                                </List>
+                                <Divider />
 
-                        : //if room state not null
-                        <div className="home">
-                            <h4 className="mt-3">Fill the code for</h4>
-                            <h1 className="mt-2">Meeting Now!</h1>
-                            <input
-                                value={this.state.roomName}
-                                onChange={this.changeRoomID}
-                                placeholder="Enter Room Name" />
-                            <button className="standard-button" disabled={disabled} onClick={this.changeRoom}>Join</button>
-                            <br />
-                            <button className="standard-button" onClick={e => this.props.logout(e)}>Logout</button>
-                            <br />
-                            {(this.state.isLoading === true) ? <div className="loader">Connecting</div> : <div></div>}
+                                <List>
+                                    <h2 className="mt-2">Fill the channel name to join</h2>
+                                    <TextField
+                                        style={{ marginLeft: 80, marginBottom: 20 }}
+                                        variant="outlined"
+                                        required
+                                        name="channel name"
+                                        label="Channel Name"
+                                        type="name"
+                                        id="name"
+                                        onChange={this.changeChannel}
+                                    />
+                                    <br />
+                                    <button className="standard-button" disabled={disabled} onClick={this.changeScreen}>Join</button>
+                                </List>
+                                <Divider />
+
+                                <List>
+                                    <Typography >Your Channels</Typography>
+                                </List>
+                                <Divider />
+
+                                <List>
+                                    <button className="standard-button" onClick={e => this.props.logout(e)}>Logout</button>
+                                </List>
+                            </Drawer>
+
+                            <main className={classes.content}>
+                                <div className={classes.toolbar} />
+                                {this.state.proceed === true
+                                    ?
+                                    <ChatScreen
+                                        room={this.state.channelName}
+                                        identity={this.props.identity}
+                                        connectCall={this.connectCall}
+                                        isLoading={this.state.isLoading}
+                                        video={this.state.room} />
+                                    :
+                                    <Paper elevation={3}>
+                                        <Welcome identity={this.props.identity} />
+                                    </Paper>}
+                            </main>
+
                         </div>
+                        : <Room
+                            backtoHome={this.backtoHome}
+                            room={this.state.room}
+                            channelName={this.state.channelName} />
                 }
             </div>
         );
     }
 }
 
-export default App;
+App.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+
+export default withStyles(styles)(App);

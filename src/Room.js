@@ -187,6 +187,7 @@ class Room extends Component {
             drawer: {
                 width: 340,
                 flexShrink: 0,
+                backgroundImage: `url("./bb-background2.png")`
             },
             drawerPaper: {
                 width: 340,
@@ -236,7 +237,7 @@ class Room extends Component {
                 <CssBaseline />
 
                 <Grid id="appbar" style={styles.root}>
-                    <AppBar position="fixed" style={{ zIndex: 1401, background: '#2E3B55' }}>
+                    <AppBar position="fixed" style={{ zIndex: 1401, background: '#008B8B' }}>
                         <Toolbar variant="dense">
 
                             <Typography variant="h6" style={styles.title}>
@@ -423,9 +424,7 @@ class Room extends Component {
                         <Divider />
 
                         <List>
-                            {
-                                <ChatScreen room={this.props.roomName} email={this.props.room.localParticipant.identity} />
-                            }
+                            <ChatScreen room={this.props.channelName} identity={this.props.room.localParticipant.identity} video={this.props.room} />
                         </List>
                     </div>
                 </Drawer >

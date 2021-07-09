@@ -11,10 +11,14 @@ import {
     TextField,
     Toolbar,
     Typography,
+    Button
 } from "@material-ui/core";
+import '../Initial/App.css'
 import { Send } from "@material-ui/icons";
 import axios from "axios";
 import ChatItem from "./ChatItem";
+import Logo from '../Logo.jpg'
+import VideoCallIcon from '@material-ui/icons/VideoCall';
 const Chat = require("twilio-chat");
 
 class ChatScreen extends React.Component {
@@ -32,7 +36,7 @@ class ChatScreen extends React.Component {
     }
 
 
-    joinChannel = async (channel) => {
+    connectChannel = async (channel) => {
         if (channel.channelState.status !== "joined") {
             await channel.join();
         }
@@ -42,12 +46,12 @@ class ChatScreen extends React.Component {
             loading: false
         });
 
-        channel.on("messageAdded", this.handleMessageAdded);
+        channel.on("messageAdded", this.messageUpdate);
         this.scrollToBottom();
     };
 
 
-    handleMessageAdded = (message) => {
+    messageUpdate = (message) => {
         const { messages } = this.state;
         this.setState({
             messages: [...messages, message],
@@ -57,7 +61,6 @@ class ChatScreen extends React.Component {
     };
 
     scrollToBottom = () => {
-
         const scrollHeight = this.scrollDiv.current.scrollHeight;
         const height = this.scrollDiv.current.clientHeight;
         const maxScrollTop = scrollHeight - height;
@@ -67,17 +70,17 @@ class ChatScreen extends React.Component {
 
     componentDidMount = async () => {
         const room = this.props.room
-        const email = this.props.email
+        const identity = this.props.identity
         let token = "";
 
-        if (!email || !room) {
-            return //this.props.history.replace("/");
+        if (!identity || !room) {
+            this.props.history.replace("/");
         }
 
         this.setState({ loading: true });
 
         try {
-            token = await this.getToken(email);
+            token = await this.getToken(identity);
         } catch {
             throw new Error("Unable to get token, please reload this page");
         }
@@ -85,12 +88,12 @@ class ChatScreen extends React.Component {
         const client = await Chat.Client.create(token);
 
         client.on("tokenAboutToExpire", async () => {
-            const token = await this.getToken(email);
+            const token = await this.getToken(identity);
             client.updateToken(token);
         });
 
         client.on("tokenExpired", async () => {
-            const token = await this.getToken(email);
+            const token = await this.getToken(identity);
             client.updateToken(token);
         });
 
@@ -103,7 +106,7 @@ class ChatScreen extends React.Component {
 
         try {
             const channel = await client.getChannelByUniqueName(room);
-            this.joinChannel(channel);
+            this.connectChannel(channel);
         } catch (err) {
             try {
                 const channel = await client.createChannel({
@@ -111,7 +114,7 @@ class ChatScreen extends React.Component {
                     friendlyName: room,
                 });
 
-                this.joinChannel(channel);
+                this.connectChannel(channel);
             } catch {
                 console.log(err)
                 throw new Error("Unable to create channel, please reload this page");
@@ -128,7 +131,7 @@ class ChatScreen extends React.Component {
         }
     };
 
-    getToken = async (email) => {
+    getToken = async (identity) => {
         const response = await axios.get(`http://localhost:4000/api/token`, { withCredentials: true });
         const { data } = response;
         return data.accessToken;
@@ -136,9 +139,9 @@ class ChatScreen extends React.Component {
 
     render() {
         const { loading, text, messages, channel } = this.state;
-        const { location } = this.props;
-        const { state } = location || {};
-        const { email, room } = state || {};
+        //const { location } = this.props;
+        //const { state } = location || {};
+        const { identity, room } = this.props;
 
         return (
             <Container component="main" maxWidth="md">
@@ -146,11 +149,17 @@ class ChatScreen extends React.Component {
                     <CircularProgress style={{ color: "white" }} />
                 </Backdrop>
 
-                <AppBar elevation={10}>
+                <AppBar elevation={10} style={{ flexGrow: 1, zIndex: 1401, background: '#008080' }}>
                     <Toolbar>
+                        <img src={Logo} height="20%" width="5%" />
                         <Typography variant="h6">
-                            {`Room: ${room}, User: ${email}`}
+                            {`Channel: ${room}, User: ${identity}`}
                         </Typography>
+                        {(this.props.isLoading === true) ? <div className="loading">Connecting</div> : <div></div>}
+                        <div style={styles.toolbarButtons}>
+                            {this.props.video === null ? <Button onClick={this.props.connectCall} startIcon={<VideoCallIcon />} variant="contained"
+                                color="primary" style={styles.button}>Join Video</Button> : ''}
+                        </div>
                     </Toolbar>
                 </AppBar>
 
@@ -164,7 +173,7 @@ class ChatScreen extends React.Component {
                                     <ChatItem
                                         key={message.index}
                                         message={message}
-                                        email={email} />
+                                        identity={identity} />
                                 )}
                         </List>
                     </Grid>
@@ -178,9 +187,11 @@ class ChatScreen extends React.Component {
                             <Grid item style={styles.textFieldContainer}>
                                 <TextField
                                     required
+                                    id="filled-basic"
                                     style={styles.textField}
                                     placeholder="Enter message"
                                     variant="outlined"
+                                    //style={{ background: "white" }}
                                     multiline
                                     rows={2}
                                     value={text}
@@ -198,6 +209,7 @@ class ChatScreen extends React.Component {
                                     <Send style={styles.sendIcon} />
                                 </IconButton>
                             </Grid>
+
                         </Grid>
                     </Grid>
                 </Grid>
@@ -208,7 +220,9 @@ class ChatScreen extends React.Component {
 }
 
 const styles = {
-    textField: { width: "100%", borderWidth: 0, borderColor: "transparent" },
+    button: { backgroundColor: "#262d31", borderWidth: 3 },
+    toolbarButtons: { marginLeft: 'auto', },
+    textField: { width: "100%", borderWidth: 60, background: "white" },
     textFieldContainer: { flex: 1, marginRight: 12 },
     gridItem: { paddingTop: 12, paddingBottom: 12 },
     gridItemChatList: { overflow: "auto", height: "70vh" },

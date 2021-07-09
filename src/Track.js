@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import './Initial/App.css';
 
+
 class Track extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            raiseHand: false,
+            trackOff: false
+        }
 
         //access DOM element in order to attatch the track
         this.ref = React.createRef();
@@ -20,10 +25,7 @@ class Track extends Component {
 
             } else {
                 this.props.track.on('message', message => {
-                    this.props.snackBar();
-                    this.props.changeSnackbarmessage(`${this.props.id} : ${message}`);
-                    this.props.pushMessage(this.props.id, message);
-                    console.log(message);
+                    this.setState({ raiseHand: message });
                 });
             }
         }
@@ -34,9 +36,17 @@ class Track extends Component {
             <div>
 
                 <div className="track" ref={this.ref}>
+                    {
+                        this.props.track && this.props.track.kind === 'data'
+                            ? <div>{
+                                this.state.raiseHand || this.props.raiseHand === true ?
+                                    <h4>handraised</h4> : ''
 
+                            }
+                            </div>
+                            : ''
+                    }
                 </div>
-
             </div>
         )
     }
