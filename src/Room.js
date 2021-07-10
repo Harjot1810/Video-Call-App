@@ -330,7 +330,8 @@ class Room extends Component {
 
                                     <Attendee key={this.props.room.localParticipant.identity}
                                         dominantSpeaker={this.state.dominantSpeaker}
-                                        localParticipant="true" attendee={this.props.room.localParticipant}
+                                        localParticipant="true"
+                                        attendee={this.props.room.localParticipant}
                                         pushMessage={this.pushMessage}
                                         id={this.props.room.localParticipant.identity}
                                     />

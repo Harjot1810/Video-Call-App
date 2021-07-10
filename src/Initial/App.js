@@ -14,8 +14,13 @@ import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
+import {
+    Backdrop,
+    CircularProgress,
+} from "@material-ui/core";
 import { styles } from './Styles.js'
 const { connect, LocalDataTrack } = require('twilio-video'); //Importing twilio-javascript SDK and Data API
+const Chat = require("twilio-chat");
 
 
 class App extends Component {
@@ -26,7 +31,10 @@ class App extends Component {
             isLoading: false,
             room: null,
             channelName: '',
-            proceed: false
+            proceed: false,
+            loading: false,
+            client: null,
+            token: null
         }
         console.log(this.props.identity);
         this.nameField = React.createRef();              //creating Reference 
@@ -35,19 +43,65 @@ class App extends Component {
         this.changeState = this.changeState.bind(this);  //Change state of isLoading
         this.changeChannel = this.changeChannel.bind(this);//Change Room id when user enters room name
         this.changeScreen = this.changeScreen.bind(this);    //change Room name
+        this.connectChat = this.connectChat.bind(this);
+    }
+
+    getToken = async () => {
+        const response = await axios.get(`http://localhost:4000/api/token`, { withCredentials: true });
+        const { data } = response;
+        return data.accessToken;
+    }
+
+    connectChat = async () => {
+        const room = this.state.channelName
+        const identity = this.props.identity
+        let token = "";
+
+        if (!identity || !room) {
+            this.props.history.replace("/");
+        }
+
+        this.setState({ loading: true });
+
+        try {
+            token = await this.getToken(identity);
+            this.setState({ token: token });
+
+        } catch {
+            throw new Error("Unable to get token, please reload this page");
+        }
+
+        const client = await Chat.Client.create(token);
+
+        const clientChannels = await client.getSubscribedChannels()
+        console.log(clientChannels)
+
+        client.on("tokenAboutToExpire", async () => {
+            const token = await this.getToken(identity);
+            client.updateToken(token);
+        });
+
+        client.on("tokenExpired", async () => {
+            const token = await this.getToken(identity);
+            client.updateToken(token);
+        });
+
+        this.setState({ client: client, loading: false });
     }
 
     async connectCall() {
         try {
+            const identity = this.props.identity
             this.setState({
                 isLoading: true,
             });
 
             //fetching access token
-            const signal = await axios.get('http://localhost:4000/api/token', { withCredentials: true });
-            const store = await signal.data;
-            const token = store.accessToken;
-            const room = await connect(store.accessToken, {
+            /* const signal = await axios.get('http://localhost:4000/api/token', { withCredentials: true });
+             const store = await signal.data;
+             const token = store.accessToken;*/
+            //const token = await this.getToken(identity)
+            const room = await connect(this.state.token, {
                 name: this.state.channelName,
                 audio: true,
                 video: true,
@@ -72,7 +126,6 @@ class App extends Component {
         });
     }
 
-
     changeState() {                         //update isLoading state
         this.setState({
             isLoading: true,
@@ -90,7 +143,6 @@ class App extends Component {
         this.setState({
             channelName: event.target.value
         });
-
     }
 
     render() {
@@ -130,7 +182,7 @@ class App extends Component {
                                         onChange={this.changeChannel}
                                     />
                                     <br />
-                                    <button className="standard-button" disabled={disabled} onClick={this.changeScreen}>Join</button>
+                                    <button className="standard-button" disabled={disabled} onClick={this.connectChat}>Join</button>
                                 </List>
                                 <Divider />
 
@@ -146,18 +198,22 @@ class App extends Component {
 
                             <main className={classes.content}>
                                 <div className={classes.toolbar} />
-                                {this.state.proceed === true
+                                {this.state.client !== null
                                     ?
                                     <ChatScreen
                                         room={this.state.channelName}
                                         identity={this.props.identity}
                                         connectCall={this.connectCall}
                                         isLoading={this.state.isLoading}
+                                        client={this.state.client}
                                         video={this.state.room} />
                                     :
                                     <Paper elevation={3}>
                                         <Welcome name={this.props.name} />
                                     </Paper>}
+                                <Backdrop open={this.state.loading} style={{ zIndex: 99999 }}>
+                                    <CircularProgress style={{ color: "white" }} />
+                                </Backdrop>
                             </main>
 
                         </div>

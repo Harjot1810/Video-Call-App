@@ -43,9 +43,8 @@ class Attendee extends Component {
     changeraiseHand() {
         console.log(this.state.raiseHand)
         const dataTrack = this.state.tracks.find(track => track.kind == "data");
+        dataTrack.send(!this.state.raiseHand);
         this.setState({ raiseHand: !this.state.raiseHand });
-        dataTrack.send(this.state.raiseHand);
-        console.log(this.state.raiseHand)
     }
 
     render() {
@@ -75,7 +74,7 @@ class Attendee extends Component {
                             local={this.props.localParticipant}
                             snackBar={this.props.snackBar}
                             changeSnackbarmessage={this.props.changeSnackbarmessage}
-                            pushMessage={this.props.pushMessage} id={this.props.id} />
+                            id={this.props.id} />
                     )
                 }
             </div >

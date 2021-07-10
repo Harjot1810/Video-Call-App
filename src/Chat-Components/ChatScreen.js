@@ -46,6 +46,10 @@ class ChatScreen extends React.Component {
             loading: false
         });
 
+        const messages = await channel.getMessages()
+        this.setState({ messages: messages.items || [] });
+        this.scrollToBottom();
+
         channel.on("messageAdded", this.messageUpdate);
         this.scrollToBottom();
     };
@@ -71,7 +75,8 @@ class ChatScreen extends React.Component {
     componentDidMount = async () => {
         const room = this.props.room
         const identity = this.props.identity
-        let token = "";
+        const client = this.props.client
+        /*let token = "";
 
         if (!identity || !room) {
             this.props.history.replace("/");
@@ -87,6 +92,9 @@ class ChatScreen extends React.Component {
 
         const client = await Chat.Client.create(token);
 
+        const clientChannels = await client.getSubscribedChannels()
+        console.log(clientChannels)
+
         client.on("tokenAboutToExpire", async () => {
             const token = await this.getToken(identity);
             client.updateToken(token);
@@ -95,14 +103,14 @@ class ChatScreen extends React.Component {
         client.on("tokenExpired", async () => {
             const token = await this.getToken(identity);
             client.updateToken(token);
-        });
+        });*/
 
-        client.on("channelJoined", async (channel) => {
+        /*client.on("channelJoined", async (channel) => {
             // getting list of all messages since this is an existing channel
             const messages = await channel.getMessages();
             this.setState({ messages: messages.items || [] });
             this.scrollToBottom();
-        });
+        });*/
 
         try {
             const channel = await client.getChannelByUniqueName(room);
@@ -131,11 +139,11 @@ class ChatScreen extends React.Component {
         }
     };
 
-    getToken = async (identity) => {
+    /*getToken = async (identity) => {
         const response = await axios.get(`http://localhost:4000/api/token`, { withCredentials: true });
         const { data } = response;
         return data.accessToken;
-    }
+    }*/
 
     render() {
         const { loading, text, messages, channel } = this.state;

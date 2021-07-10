@@ -16,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
     logo: {
         marginLeft: theme.spacing(120),
         marginBottom: theme.spacing(12),
-        //height: "0%",
-        //width: "0%"
     },
     paper: {
         marginTop: theme.spacing(5),
