@@ -161,11 +161,15 @@ class Room extends Component {
                 display: 'flex',
                 flexDirection: 'row wrap',
                 padding: 20,
-                width: '100%'
+                width: '100%',
+                marginRight: 360,
             },
             appbar: {
                 zIndex: 2000,
                 background: '#2E3B55',
+                width: `calc(100% - 360px)`,
+                marginRight: 360,
+
             },
             paperLeft: {
                 backgroundColor: 'transparent',
@@ -239,7 +243,7 @@ class Room extends Component {
                 <CssBaseline />
 
                 <Grid id="appbar" style={styles.root}>
-                    <AppBar position="fixed" style={{ zIndex: 1401, background: '#008B8B' }}>
+                    <AppBar position="fixed" style={styles.appbar} style={{ zIndex: 1401, background: '#008B8B' }}>
                         <Toolbar variant="dense">
                             <img src={Logo} height="15%" width="4%" />
                             <Typography variant="h6" style={styles.title}>
@@ -427,7 +431,6 @@ class Room extends Component {
                         <Divider />
 
                         <List>
-                            <ChatScreen room={this.props.channelName} identity={this.props.room.localParticipant.identity} video={this.props.room} />
                         </List>
                     </div>
                 </Drawer >

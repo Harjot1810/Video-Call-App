@@ -17,7 +17,9 @@ import { withStyles } from '@material-ui/styles';
 import {
     Backdrop,
     CircularProgress,
+    Button
 } from "@material-ui/core";
+import VideoCallIcon from '@material-ui/icons/VideoCall';
 import { styles } from './Styles.js'
 const { connect, LocalDataTrack } = require('twilio-video'); //Importing twilio-javascript SDK and Data API
 const Chat = require("twilio-chat");
@@ -47,7 +49,7 @@ class App extends Component {
     }
 
     getToken = async () => {
-        const response = await axios.get(`http://localhost:4000/api/token`, { withCredentials: true });
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/token`, { withCredentials: true });
         const { data } = response;
         return data.accessToken;
     }
@@ -55,6 +57,7 @@ class App extends Component {
     connectChat = async () => {
         const room = this.state.channelName
         const identity = this.props.identity
+        //const client = this.props.client
         let token = "";
 
         if (!identity || !room) {
@@ -86,7 +89,11 @@ class App extends Component {
             client.updateToken(token);
         });
 
+        if (!client)
+            return;
+
         this.setState({ client: client, loading: false });
+
     }
 
     async connectCall() {
@@ -150,77 +157,98 @@ class App extends Component {
         const disabled = (this.state.channelName === '') ? true : false; //state of join button (disabled/enabled)
         return (
             <div className="app">
-                {
-                    this.state.room === null
-                        ? <div className={classes.root}>
-                            <CssBaseline />
+                {<div className={classes.root}>
+                    <CssBaseline />
 
-                            <Drawer
-                                className={classes.drawer}
-                                variant="permanent"
-                                classes={{ paper: classes.drawerPaper }}
-                                anchor="left"
-                            >
-                                <List>
-                                    <Avatar className={classes.avatar}>
-                                        {this.props.name.charAt(0)}
-                                    </Avatar>
-                                    <h2>{this.props.name}</h2>
-                                </List>
-                                <Divider />
+                    <Drawer
+                        className={classes.drawer}
+                        variant="permanent"
+                        classes={{ paper: classes.drawerPaper }}
+                        anchor="left"
+                    >
+                        <List>
+                            <Avatar className={classes.avatar}>
+                                {this.props.name.charAt(0)}
+                            </Avatar>
+                            <h2>{this.props.name}</h2>
+                        </List>
+                        <Divider />
 
-                                <List>
-                                    <h2 className="mt-2">Fill the channel name to join</h2>
-                                    <TextField
-                                        style={{ marginLeft: 80, marginBottom: 20 }}
-                                        variant="outlined"
-                                        required
-                                        name="channel name"
-                                        label="Channel Name"
-                                        type="name"
-                                        id="name"
-                                        onChange={this.changeChannel}
-                                    />
-                                    <br />
-                                    <button className="standard-button" disabled={disabled} onClick={this.connectChat}>Join</button>
-                                </List>
-                                <Divider />
+                        <List>
+                            <h2 className="mt-2">Fill the channel name to join</h2>
+                            <TextField
+                                style={{ marginLeft: 80, marginBottom: 20 }}
+                                variant="outlined"
+                                required
+                                name="channel name"
+                                label="Channel Name"
+                                type="name"
+                                id="name"
+                                onChange={this.changeChannel}
+                            />
+                            <br />
+                            <button className="standard-button" disabled={disabled} onClick={this.connectChat}>Join</button>
+                        </List>
+                        <Divider />
 
-                                <List>
-                                    <Typography >Your Channels</Typography>
-                                </List>
-                                <Divider />
+                        <List>
+                            <Typography >Your Channels</Typography>
+                        </List>
+                        <Divider />
 
-                                <List>
-                                    <button className="standard-button" onClick={e => this.props.logout(e)}>Logout</button>
-                                </List>
-                            </Drawer>
+                        <List>
+                            <button className="standard-button" onClick={e => this.props.logout(e)}>Logout</button>
+                        </List>
+                    </Drawer>
 
-                            <main className={classes.content}>
-                                <div className={classes.toolbar} />
-                                {this.state.client !== null
-                                    ?
-                                    <ChatScreen
-                                        room={this.state.channelName}
-                                        identity={this.props.identity}
-                                        connectCall={this.connectCall}
-                                        isLoading={this.state.isLoading}
-                                        client={this.state.client}
-                                        video={this.state.room} />
-                                    :
-                                    <Paper elevation={3}>
-                                        <Welcome name={this.props.name} />
-                                    </Paper>}
-                                <Backdrop open={this.state.loading} style={{ zIndex: 99999 }}>
-                                    <CircularProgress style={{ color: "white" }} />
-                                </Backdrop>
-                            </main>
+                    <Drawer
+                        className={classes.drawer}
+                        variant="permanent"
+                        classes={{ paper: classes.drawerPaper }}
+                        anchor="right"
+                    >
+                        {this.state.client !== null
+                            ?
+                            <ChatScreen
+                                room={this.state.channelName}
+                                identity={this.props.identity}
+                                connectCall={this.connectCall}
+                                isLoading={this.state.isLoading}
+                                client={this.state.client}
+                                video={this.state.room} />
+                            : "Chat will appear here"}
 
-                        </div>
-                        : <Room
-                            backtoHome={this.backtoHome}
-                            room={this.state.room}
-                            channelName={this.state.channelName} />
+                    </Drawer>
+
+                    <main className={classes.content}>
+                        <div className={classes.toolbar} />
+                        {this.state.client === null ?
+                            <Paper elevation={3}>
+                                <Welcome name={this.props.name} />
+                            </Paper> :
+                            this.state.room === null
+                                ? <Button
+                                    onClick={this.connectCall}
+                                    startIcon={<VideoCallIcon />}
+                                    variant="contained"
+                                    color="primary"
+                                    style={{ backgroundColor: "#262d31", borderWidth: 3, marginTop: 70 }}>
+                                    Join Video
+                                </Button> : <Room
+                                    backtoHome={this.backtoHome}
+                                    room={this.state.room}
+                                    client={this.state.client}
+                                    channelName={this.state.channelName} />}
+                        {(this.props.isLoading === true)
+                            ? <div className="loader">Connecting</div>
+                            : <div></div>}
+                        <Backdrop open={this.state.loading} style={{ zIndex: 99999 }}>
+                            <CircularProgress style={{ color: "white" }} />
+                        </Backdrop>
+                    </main>
+
+                </div>
+
                 }
             </div>
         );

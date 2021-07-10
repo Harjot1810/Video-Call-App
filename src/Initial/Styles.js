@@ -13,11 +13,19 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { createStyles, Theme } from '@material-ui/core/styles';
 
-const drawerWidth = 400;
+const drawerWidth = 360;
 
 const styles = theme => ({
+    div: {
+        display: 'flex',
+        flexDirection: 'row wrap',
+        padding: 20,
+        width: '100%'
+    },
+
     root: {
         display: 'flex',
+        flexGrow: 1
     },
     appBar: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -46,8 +54,25 @@ const styles = theme => ({
     //toolbar: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
+        //marginLeft: drawerWidth,
+        marginRight: drawerWidth,
+        width: '100%',
+        display: 'flex'
         //backgroundColor: theme.palette.background.default,
         //paddingTop: 60,
+    },
+    paperLeft: {
+        flex: 4,
+        height: '100%',
+        margin: 10,
+        textAlign: 'center',
+        padding: 10
+    },
+    paperRight: {
+        height: 600,
+        flex: 1,
+        margin: 10,
+        textAlign: 'center',
     },
 });
 

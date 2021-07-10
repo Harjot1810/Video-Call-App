@@ -164,23 +164,6 @@ class ChatScreen extends React.Component {
                             {`CHANNEL: ${room}, USER: ${identity}`}
                         </Typography>
 
-                        {(this.props.isLoading === true)
-                            ? <div className="loader">Connecting</div>
-                            : <div></div>}
-
-                        <div style={styles.toolbarButtons}>
-                            {this.props.video === null
-                                ?
-                                <Button
-                                    onClick={this.props.connectCall}
-                                    startIcon={<VideoCallIcon />}
-                                    variant="contained"
-                                    color="primary"
-                                    style={styles.button}>
-                                    Join Video
-                                </Button>
-                                : ''}
-                        </div>
 
                     </Toolbar>
                 </AppBar>

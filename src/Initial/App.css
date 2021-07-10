@@ -276,7 +276,7 @@ input {
   width: 100%;
 }
 .animated-title > div div {
-  font-size: 12vmin;
+  font-size: 6vmin;
   padding: 2vmin 0;
   position: absolute;
 }

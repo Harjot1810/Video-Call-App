@@ -25,7 +25,7 @@ function Authentication(props) {
         try {
             e.preventDefault();
             console.log("logout");
-            await axios.get('http://localhost:4000/api/logout', { withCredentials: true });
+            await axios.get(`${process.env.REACT_APP_API_URL}/api/logout`, { withCredentials: true });
             setScreen(false);
             setLoading(false);
         } catch (e) {
@@ -35,7 +35,7 @@ function Authentication(props) {
 
     const readCookie = async () => {                                                         //function to read cookies
         try {
-            const res = await axios.get('http://localhost:4000/api/profile', { withCredentials: true });
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, { withCredentials: true });
             console.log("cook");
             console.log(screen);
             //setScreen(res.data.isAuth);

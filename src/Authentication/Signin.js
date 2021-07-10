@@ -28,10 +28,10 @@ function Signin(props) {
         try {
             e.preventDefault();
             setLoading(true);
-            const res = await axios.post('http://localhost:4000/api/login', { email: email, password: password }, { withCredentials: true });
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/login`, { email: email, password: password }, { withCredentials: true });
             if (res.data.isAuth === true || res.data.error === true) {
                 console.log(res.data);
-                const res1 = await axios.get('http://localhost:4000/api/profile', { withCredentials: true });
+                const res1 = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, { withCredentials: true });
                 setIdentity(res1.data.email);
                 setName(res1.data.name);
                 setScreen(res.data.isAuth);

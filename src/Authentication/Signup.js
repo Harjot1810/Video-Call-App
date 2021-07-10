@@ -31,10 +31,10 @@ function Signup(props) {
         try {
             e.preventDefault();
             setLoading(true);
-            const res = await axios.post('http://localhost:4000/api/register', { firstname: newfname, lastname: newlname, email: newemail, password: newpassword, password2: newpassword2 }, { withCredentials: true });
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/register`, { firstname: newfname, lastname: newlname, email: newemail, password: newpassword, password2: newpassword2 }, { withCredentials: true });
             if (res.data.success === true) {
-                const res1 = await axios.post('http://localhost:4000/api/login', { email: newemail, password: newpassword }, { withCredentials: true });
-                const res2 = await axios.get('http://localhost:4000/api/profile', { withCredentials: true });
+                const res1 = await axios.post(`${process.env.REACT_APP_API_URL}/api/login`, { email: newemail, password: newpassword }, { withCredentials: true });
+                const res2 = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, { withCredentials: true });
                 setIdentity(res2.data.email);
                 setName(res2.data.name);
                 console.log(res1.data);
