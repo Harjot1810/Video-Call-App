@@ -8,7 +8,7 @@ function Welcome(props) {
             <div class="text-top">
                 <div>
                     <span>Welcome</span>
-                    <span>{props.identity}</span>
+                    <span>{props.name}</span>
                 </div>
             </div>
             <div class="text-bottom">

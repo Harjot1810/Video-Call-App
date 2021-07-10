@@ -17,7 +17,7 @@ import Paper from '@material-ui/core/Paper';
 function Signup(props) {
 
     const classes = useStyles(props);
-    const { setScreen, setOpenSignup, setIdentity } = props;
+    const { setScreen, setOpenSignup, setIdentity, setName } = props;
     const [newemail, setnewEmail] = useState();
     const [newpassword, setnewPassword] = useState();
     const [newpassword2, setnewPassword2] = useState();
@@ -35,7 +35,8 @@ function Signup(props) {
             if (res.data.success === true) {
                 const res1 = await axios.post('http://localhost:4000/api/login', { email: newemail, password: newpassword }, { withCredentials: true });
                 const res2 = await axios.get('http://localhost:4000/api/profile', { withCredentials: true });
-                setIdentity(res2.data.name);
+                setIdentity(res2.data.email);
+                setName(res2.data.name);
                 console.log(res1.data);
                 setScreen(res1.data.isAuth);
                 setsignupError('');

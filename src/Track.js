@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Initial/App.css';
+import PanToolIcon from '@material-ui/icons/PanTool';
 
 
 class Track extends Component {
@@ -26,6 +27,8 @@ class Track extends Component {
             } else {
                 this.props.track.on('message', message => {
                     this.setState({ raiseHand: message });
+                    console.log(this.state.raiseHand);
+                    console.log(this.props.raiseHand);
                 });
             }
         }
@@ -36,15 +39,14 @@ class Track extends Component {
             <div>
 
                 <div className="track" ref={this.ref}>
-                    {
+                    {this.state.raiseHand || this.props.raiseHand === true ?
                         this.props.track && this.props.track.kind === 'data'
-                            ? <div>{
-                                this.state.raiseHand || this.props.raiseHand === true ?
-                                    <h4>handraised</h4> : ''
-
+                            ? <div className="raisehand">{
+                                <PanToolIcon />
                             }
                             </div>
                             : ''
+                        : ''
                     }
                 </div>
             </div>

@@ -17,7 +17,7 @@ import '../Initial/App.css'
 import { Send } from "@material-ui/icons";
 import axios from "axios";
 import ChatItem from "./ChatItem";
-import Logo from '../Logo.jpg'
+import Logo from '../logoinverted.jpg'
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 const Chat = require("twilio-chat");
 
@@ -139,27 +139,41 @@ class ChatScreen extends React.Component {
 
     render() {
         const { loading, text, messages, channel } = this.state;
-        //const { location } = this.props;
-        //const { state } = location || {};
         const { identity, room } = this.props;
 
         return (
             <Container component="main" maxWidth="md">
+
                 <Backdrop open={loading} style={{ zIndex: 99999 }}>
                     <CircularProgress style={{ color: "white" }} />
                 </Backdrop>
 
                 <AppBar elevation={10} style={{ flexGrow: 1, zIndex: 1401, background: '#008080' }}>
                     <Toolbar>
-                        <img src={Logo} height="20%" width="5%" />
-                        <Typography variant="h6">
-                            {`Channel: ${room}, User: ${identity}`}
+                        <img src={Logo} height="15%" width="4%" />
+
+                        <Typography variant="h6" style={{ marginLeft: 10 }}>
+                            {`CHANNEL: ${room}, USER: ${identity}`}
                         </Typography>
-                        {(this.props.isLoading === true) ? <div className="loading">Connecting</div> : <div></div>}
+
+                        {(this.props.isLoading === true)
+                            ? <div className="loader">Connecting</div>
+                            : <div></div>}
+
                         <div style={styles.toolbarButtons}>
-                            {this.props.video === null ? <Button onClick={this.props.connectCall} startIcon={<VideoCallIcon />} variant="contained"
-                                color="primary" style={styles.button}>Join Video</Button> : ''}
+                            {this.props.video === null
+                                ?
+                                <Button
+                                    onClick={this.props.connectCall}
+                                    startIcon={<VideoCallIcon />}
+                                    variant="contained"
+                                    color="primary"
+                                    style={styles.button}>
+                                    Join Video
+                                </Button>
+                                : ''}
                         </div>
+
                     </Toolbar>
                 </AppBar>
 
@@ -191,7 +205,6 @@ class ChatScreen extends React.Component {
                                     style={styles.textField}
                                     placeholder="Enter message"
                                     variant="outlined"
-                                    //style={{ background: "white" }}
                                     multiline
                                     rows={2}
                                     value={text}
@@ -222,12 +235,12 @@ class ChatScreen extends React.Component {
 const styles = {
     button: { backgroundColor: "#262d31", borderWidth: 3 },
     toolbarButtons: { marginLeft: 'auto', },
-    textField: { width: "100%", borderWidth: 60, background: "white" },
+    textField: { width: "100%", borderWidth: 60, background: "#ECF0F1" },
     textFieldContainer: { flex: 1, marginRight: 12 },
     gridItem: { paddingTop: 12, paddingBottom: 12 },
     gridItemChatList: { overflow: "auto", height: "70vh" },
     gridItemMessage: { marginTop: 12, marginBottom: 12 },
-    sendButton: { backgroundColor: "#3f51b5" },
+    sendButton: { backgroundColor: "#008080" },
     sendIcon: { color: "white" },
     mainGrid: { paddingTop: 100, borderWidth: 1 },
 };

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './Initial/App.css';
 import Track from './Track';
+import PanToolOutlinedIcon from '@material-ui/icons/PanToolOutlined';
+import PanToolIcon from '@material-ui/icons/PanTool';
+import { IconButton } from '@material-ui/core';
 
 
 class Attendee extends Component {
@@ -14,7 +17,7 @@ class Attendee extends Component {
 
         this.state = {
             tracks: nonNullTracks, //audio, video and data tracks of all the attendees
-            raiseHand: false
+            raiseHand: false,
         }
 
         this.changeraiseHand = this.changeraiseHand.bind(this);
@@ -38,10 +41,11 @@ class Attendee extends Component {
     }
 
     changeraiseHand() {
+        console.log(this.state.raiseHand)
         const dataTrack = this.state.tracks.find(track => track.kind == "data");
-        dataTrack.send(!this.state.raiseHand);
         this.setState({ raiseHand: !this.state.raiseHand });
-
+        dataTrack.send(this.state.raiseHand);
+        console.log(this.state.raiseHand)
     }
 
     render() {
@@ -49,14 +53,21 @@ class Attendee extends Component {
         return (
 
             <div className={`attendee ${isDominantSpeaker}`} id={this.props.attendee.identity}>
-                <div className="identity">{this.props.attendee.identity}</div>
-                {
-                    this.props.localParticipant
-                        ? <div classname="raisehand"><button className="standard-button" onClick={this.state.changeraiseHand}>Raise hand</button></div>
-                        : ''
-                }
-                {
+                <div className="identity">{this.props.attendee.identity}
+                    {
+                        this.props.localParticipant
+                            ? <div>
 
+                                {this.state.raiseHand === false
+                                    ? <IconButton onClick={this.changeraiseHand} style={{ color: "white" }}><PanToolOutlinedIcon /> </IconButton>
+                                    : <IconButton onClick={this.changeraiseHand} style={{ color: "white" }}><PanToolIcon /></IconButton>
+                                }
+                            </div>
+
+                            : ''
+                    }
+                </div>
+                {
                     this.state.tracks.map(track =>
                         <Track key={track}
                             track={track}
@@ -66,9 +77,8 @@ class Attendee extends Component {
                             changeSnackbarmessage={this.props.changeSnackbarmessage}
                             pushMessage={this.props.pushMessage} id={this.props.id} />
                     )
-
                 }
-            </div>
+            </div >
 
         );
     }

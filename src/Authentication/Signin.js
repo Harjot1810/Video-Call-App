@@ -12,11 +12,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
+import { SettingsSystemDaydreamRounded } from '@material-ui/icons';
 
 function Signin(props) {
 
     const classes = useStyles(props);
-    const { setScreen, setOpenSignin, setIdentity } = props;
+    const { setScreen, setOpenSignin, setIdentity, setName } = props;
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [signinError, setsigninError] = useState('');
@@ -31,7 +32,8 @@ function Signin(props) {
             if (res.data.isAuth === true || res.data.error === true) {
                 console.log(res.data);
                 const res1 = await axios.get('http://localhost:4000/api/profile', { withCredentials: true });
-                setIdentity(res1.data.name);
+                setIdentity(res1.data.email);
+                setName(res1.data.name);
                 setScreen(res.data.isAuth);
                 setsigninError('');
                 setOpenSignin(false);

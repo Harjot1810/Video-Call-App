@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Initial/App.css';
 import Snackbar from '@material-ui/core/Snackbar';
+import Logo from './logoinverted.jpg'
 import Attendee from './Attendee';
 import AudioControl from './AudioControl';
 import VideoControl from './VideoControl';
@@ -194,6 +195,7 @@ class Room extends Component {
             },
             title: {
                 flexGrow: 1,
+                marginLeft: 10
             },
             toolbarButtons: {
                 marginLeft: 'auto',
@@ -239,9 +241,9 @@ class Room extends Component {
                 <Grid id="appbar" style={styles.root}>
                     <AppBar position="fixed" style={{ zIndex: 1401, background: '#008B8B' }}>
                         <Toolbar variant="dense">
-
+                            <img src={Logo} height="15%" width="4%" />
                             <Typography variant="h6" style={styles.title}>
-                                MS Teams
+                                Video Room
                             </Typography>
 
                             <div style={styles.toolbarButtons}>

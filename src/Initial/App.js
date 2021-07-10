@@ -111,9 +111,9 @@ class App extends Component {
                             >
                                 <List>
                                     <Avatar className={classes.avatar}>
-                                        {this.props.identity.charAt(0)}
+                                        {this.props.name.charAt(0)}
                                     </Avatar>
-                                    <h2>{this.props.identity}</h2>
+                                    <h2>{this.props.name}</h2>
                                 </List>
                                 <Divider />
 
@@ -156,7 +156,7 @@ class App extends Component {
                                         video={this.state.room} />
                                     :
                                     <Paper elevation={3}>
-                                        <Welcome identity={this.props.identity} />
+                                        <Welcome name={this.props.name} />
                                     </Paper>}
                             </main>
 

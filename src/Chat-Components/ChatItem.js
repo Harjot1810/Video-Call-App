@@ -29,13 +29,12 @@ const styles = {
         maxWidth: "75%",
         borderRadius: 5,
         padding: 16,
-        color: "white",
+        color: "black",
         fontSize: 14,
-        //opacity: 0.8,
-        backgroundColor: isOwnMessage ? "#778899" : "#a9a9a9",
+        backgroundColor: isOwnMessage ? "#16A085" : "#BDC3C7",
     }),
-    author: { fontSize: 12, color: "gray" },
-    timestamp: { fontSize: 8, color: "white", textAlign: "right", paddingTop: 4 },
+    author: { fontSize: 12, color: "black" },
+    timestamp: { fontSize: 8, color: "black", textAlign: "right", paddingTop: 4 },
 };
 
 export default ChatItem;

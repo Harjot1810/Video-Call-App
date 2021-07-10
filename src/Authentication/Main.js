@@ -15,7 +15,8 @@ function Authentication(props) {
 
     const classes = useStyles(props);
     const [screen, setScreen] = useState(false);                                            //to load the respective screen accodingle
-    const [identity, setIdentity] = useState('');                                           //store the identity of user
+    const [identity, setIdentity] = useState('');
+    const [name, setName] = useState('');                                           //store the identity of user
     const [openSignin, setOpenSignin] = useState(false);
     const [openSignup, setOpenSignup] = useState(false);
     const [isLoading, setLoading] = useState(false);
@@ -41,7 +42,8 @@ function Authentication(props) {
             if (res.data.isAuth === true) {
                 setScreen(res.data.isAuth);
                 console.log(screen);
-                setIdentity(res.data.name);
+                setIdentity(res.data.email);
+                setName(res.data.name);
                 console.log(identity);
                 console.log(res.data);
 
@@ -135,7 +137,7 @@ function Authentication(props) {
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                         >
-                            <Signup setScreen={setScreen} setOpenSignup={setOpenSignup} setIdentity={setIdentity} />
+                            <Signup setScreen={setScreen} setOpenSignup={setOpenSignup} setIdentity={setIdentity} setName={setName} />
                         </Dialog>
 
                         <Dialog
@@ -144,11 +146,11 @@ function Authentication(props) {
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                         >
-                            <Signin setScreen={setScreen} setOpenSignin={setOpenSignin} setIdentity={setIdentity} />
+                            <Signin setScreen={setScreen} setOpenSignin={setOpenSignin} setIdentity={setIdentity} setName={setName} />
                         </Dialog>
                     </div>
 
-                    : <App logout={deleteCookie} identity={identity} />
+                    : <App logout={deleteCookie} identity={identity} name={name} />
 
             }
         </div >
