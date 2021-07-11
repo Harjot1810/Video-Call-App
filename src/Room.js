@@ -42,7 +42,6 @@ class Room extends Component {
             tracks: nonNullTracks,                                            //Track of local participant
             audioOff: false,                                                  //Audio track's state of local participant
             videoOff: false,                                                  //Video track'state of local participant
-            setChatOpen: false,
             setAttendeesOpen: false,
             setSnackbarOpen: false,
             snackBarmessage: ''
@@ -50,7 +49,6 @@ class Room extends Component {
         this.disconnectCall = this.disconnectCall.bind(this);                 //binding this to disconnectCall()
         this.changeAudio = this.changeAudio.bind(this);
         this.changeVideo = this.changeVideo.bind(this);
-        this.handleChatDrawer = this.handleChatDrawer.bind(this);
         this.handleAttendeesDialog = this.handleAttendeesDialog.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleSnackbar = this.handleSnackbar.bind(this);
@@ -124,12 +122,6 @@ class Room extends Component {
         });
     }
 
-    handleChatDrawer() {
-        this.setState({
-            setChatOpen: !this.state.setChatOpen
-        });
-    }
-
     handleAttendeesDialog() {
         this.setState({
             setAttendeesOpen: true
@@ -162,7 +154,6 @@ class Room extends Component {
                 flexDirection: 'row wrap',
                 padding: 20,
                 width: '100%',
-                marginRight: 360,
             },
             appbar: {
                 zIndex: 2000,
@@ -300,17 +291,6 @@ class Room extends Component {
                                     </IconButton>
                                 </Tooltip>
 
-                                <Tooltip title="Chat" arrow>
-                                    <IconButton
-                                        color="inherit"
-                                        aria-label="open drawer"
-                                        edge="end"
-                                        fontSize="large"
-                                        onClick={this.handleChatDrawer}>
-                                        <ChatIcon />
-                                    </IconButton>
-                                </Tooltip>
-
                             </div>
                         </Toolbar>
                     </AppBar>
@@ -413,27 +393,6 @@ class Room extends Component {
                     }}
                 />
 
-                <Drawer
-                    style={styles.drawer}
-                    variant="persistent"
-                    anchor="right"
-                    open={this.state.setChatOpen}
-                >
-                    <div style={styles.drawerContainer}>
-                        <div style={styles.drawerHeader}>
-
-                            <IconButton onClick={this.handleChatDrawer} fontSize="large">
-                                <ChevronRightIcon />
-                            </IconButton>
-
-                        </div>
-
-                        <Divider />
-
-                        <List>
-                        </List>
-                    </div>
-                </Drawer >
             </div >
         );
     }

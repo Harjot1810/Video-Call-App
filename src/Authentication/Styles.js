@@ -4,17 +4,17 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
-        minWidth: 300,
+        //minWidth: 300,
         width: '100%',
         marginTop: theme.spacing(8),
         '& > *': {
             marginTop: theme.spacing(1),
             marginBottom: theme.spacing(2),
-            marginLeft: theme.spacing(100),
+            marginLeft: "50%"
         },
     },
     logo: {
-        marginLeft: theme.spacing(120),
+        marginLeft: "62%",
         marginBottom: theme.spacing(12),
     },
     paper: {
@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-
     },
     avatar: {
         margin: theme.spacing(1),
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
     mainbutton: {
         position: 'relative',
-        height: 60,
+        height: "20%",
         width: "40%",
         [theme.breakpoints.down('xs')]: {
             width: '100% !important',          // Overrides inline-style

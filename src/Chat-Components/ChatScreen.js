@@ -152,22 +152,6 @@ class ChatScreen extends React.Component {
         return (
             <Container component="main" maxWidth="md">
 
-                <Backdrop open={loading} style={{ zIndex: 99999 }}>
-                    <CircularProgress style={{ color: "white" }} />
-                </Backdrop>
-
-                <AppBar elevation={10} style={{ flexGrow: 1, zIndex: 1401, background: '#008080' }}>
-                    <Toolbar>
-                        <img src={Logo} height="15%" width="4%" />
-
-                        <Typography variant="h6" style={{ marginLeft: 10 }}>
-                            {`CHANNEL: ${room}, USER: ${identity}`}
-                        </Typography>
-
-
-                    </Toolbar>
-                </AppBar>
-
                 <CssBaseline />
 
                 <Grid container direction="column" style={styles.mainGrid}>

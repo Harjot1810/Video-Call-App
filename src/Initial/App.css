@@ -2,7 +2,7 @@
 .app {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 5px;
   box-sizing: border-box;
   position: fixed;
   top: 0;
@@ -26,8 +26,8 @@ h4 {
 h2 {
   color: #2f4f4f;
   font-family: roboto,arial,times new roman;
-  margin-top: 0px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   text-align:center;
 }
 
@@ -263,7 +263,7 @@ input {
   font-family: Roboto, Arial, sans-serif;
   font-weight: bold;
   height: 90vmin;
-  left: 50%;
+  left: 35%;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);

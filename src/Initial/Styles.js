@@ -2,6 +2,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
+import ChatScreen from '../Chat-Components/ChatScreen';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/styles';
+import {
+    Backdrop,
+    CircularProgress,
+    Button
+} from "@material-ui/core";
+import VideoCallIcon from '@material-ui/icons/VideoCall';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
@@ -22,15 +33,17 @@ const styles = theme => ({
         padding: 20,
         width: '100%'
     },
-
+    paper: {
+        //marginTop: 70,
+        height: "99%",
+        //opacity: .5
+        //backgroundColor: 'transparent',
+    },
     root: {
         display: 'flex',
         flexGrow: 1
     },
-    appBar: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-    },
+    toolbarButtons: { marginLeft: 'auto', },
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
@@ -39,7 +52,7 @@ const styles = theme => ({
         // backgroundColor: "#B3B6B7"
     },
     avatar: {
-        marginLeft: 170,
+        marginLeft: "40%",
         backgroundColor: "#008080",
         width: 70,
         height: 70,
@@ -55,7 +68,7 @@ const styles = theme => ({
     content: {
         flexGrow: 1,
         //marginLeft: drawerWidth,
-        marginRight: drawerWidth,
+        //marginRight: drawerWidth,
         width: '100%',
         display: 'flex'
         //backgroundColor: theme.palette.background.default,
