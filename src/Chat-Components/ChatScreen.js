@@ -23,11 +23,11 @@ class ChatScreen extends React.Component {
             channel: null,
         };
 
-        this.scrollDiv = React.createRef();
+        this.scrollDiv = React.createRef();                     //Used in scrollToBottom To keep the screen scrolled at bottom
     }
 
 
-    connectChannel = async (channel) => {
+    connectChannel = async (channel) => {                       //Connecting to the chat channel
         if (channel.channelState.status !== "joined") {
             await channel.join();
         }
@@ -46,7 +46,7 @@ class ChatScreen extends React.Component {
     };
 
 
-    messageUpdate = (message) => {
+    messageUpdate = (message) => {                               //invoked after every message update
         const { messages } = this.state;
         this.setState({
             messages: [...messages, message],
@@ -56,16 +56,19 @@ class ChatScreen extends React.Component {
     };
 
     scrollToBottom = () => {
-        const scrollHeight = this.scrollDiv.current.scrollHeight;
-        const height = this.scrollDiv.current.clientHeight;
-        const maxScrollTop = scrollHeight - height;
-        this.scrollDiv.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
-
+        if (this.scrollDiv.current) {
+            const scrollHeight = this.scrollDiv.current.scrollHeight;
+            const height = this.scrollDiv.current.clientHeight;
+            const maxScrollTop = scrollHeight - height;
+            this.scrollDiv.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+        }
     };
 
-    componentDidMount = async () => {
+    async updateChannel() {                                     //Updating channel after user changes the channel
+        this.setState({
+            loading: true
+        });
         const room = this.props.room
-        const identity = this.props.identity
         const client = this.props.client
 
         try {
@@ -86,6 +89,16 @@ class ChatScreen extends React.Component {
         }
     }
 
+    componentDidMount = () => {
+        this.updateChannel()
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.room !== prevProps.room) {
+            this.updateChannel();
+        }
+    }
+
     sendMessage = () => {
         const { text, channel } = this.state;
         if (text) {
@@ -101,8 +114,6 @@ class ChatScreen extends React.Component {
 
         return (
             <Container component="main" maxWidth="md">
-
-                <CssBaseline />
 
                 <Grid container direction="column" style={styles.mainGrid}>
                     <Grid item style={styles.gridItemChatList} ref={this.scrollDiv}>

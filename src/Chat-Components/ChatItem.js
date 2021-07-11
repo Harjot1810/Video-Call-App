@@ -4,7 +4,7 @@ import { ListItem } from "@material-ui/core";
 class ChatItem extends React.Component {
     render() {
         const { message, identity } = this.props;
-        const isOwnMessage = message.author === identity;
+        const isOwnMessage = message.author === identity;               //check if message is sent by local participant or not
 
         return (
             <ListItem style={styles.listItem(isOwnMessage)}>

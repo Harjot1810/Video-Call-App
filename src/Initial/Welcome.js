@@ -1,7 +1,7 @@
 import "./App.css"
 import React from 'react';
 
-function Welcome(props) {
+function Welcome(props) {  //for welcome screen
 
     return (
         <div className="animated-title">

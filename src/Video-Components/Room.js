@@ -1,29 +1,31 @@
 import React, { Component } from 'react';
-import './Initial/App.css';
-import Snackbar from '@material-ui/core/Snackbar';
-import Logo from './logoinverted.jpg'
+import '../Initial/App.css';
+import Logo from '../Pictures/logoinverted.jpg'
 import Attendee from './Attendee';
 import AudioControl from './AudioControl';
 import VideoControl from './VideoControl';
-import { Paper, Grid } from "@material-ui/core";
 import CallEndIcon from '@material-ui/icons/CallEnd';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import List from '@material-ui/core/List';
-import AppBar from '@material-ui/core/AppBar';
-import Divider from '@material-ui/core/Divider';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
 import PeopleIcon from '@material-ui/icons/People';
-import Badge from '@material-ui/core/Badge';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Avatar from '@material-ui/core/Avatar';
+import {
+    AppBar,
+    Avatar,
+    Badge,
+    Button,
+    CssBaseline,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Divider,
+    Grid,
+    IconButton,
+    List,
+    Snackbar,
+    Tooltip,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 
 class Room extends Component {
 
@@ -167,7 +169,6 @@ class Room extends Component {
             },
             toolbarButtons: {
                 marginLeft: 'auto',
-
             },
         };
 
@@ -180,7 +181,7 @@ class Room extends Component {
                 <Grid id="appbar" style={styles.root}>
                     <AppBar position="fixed" style={styles.appbar} style={{ zIndex: 1401, background: '#008B8B' }}>
                         <Toolbar variant="dense">
-                            <img src={Logo} height="15%" width="4%" />
+                            <img src={Logo} height="15%" width="4%" alt="" />
                             <Typography variant="h6" style={styles.title}>
                                 Video Room
                             </Typography>
@@ -299,15 +300,27 @@ class Room extends Component {
                             <DialogContentText
                                 id="scroll-dialog-description"
                                 tabIndex={-1}>
-                                {
-                                    this.state.attendeesList.map(attendee =>
-                                        <List>
-                                            <Avatar variant="rounded" style={{ backgroundColor: "Blue" }}>{attendee.identity.charAt(0)}</Avatar>
-                                            <Typography variant="h6">{attendee.identity}</Typography>
-                                            <Divider />
-                                        </List>
-                                    )
-                                }
+                                <Grid container>
+                                    {
+                                        this.state.attendeesList.map(attendee =>
+                                            <List>
+                                                <Grid item>
+                                                    <Avatar
+                                                        variant="rounded"
+                                                        style={{ backgroundColor: "Blue" }}>
+                                                        {attendee.identity.charAt(0)}
+                                                    </Avatar>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Typography variant="h6">
+                                                        {attendee.identity}
+                                                    </Typography>
+                                                </Grid>
+                                                <Divider />
+                                            </List>
+                                        )
+                                    }
+                                </Grid>
                             </DialogContentText>
                         </DialogContent>
 

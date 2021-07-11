@@ -1,4 +1,4 @@
-import './Initial/App.css';
+import '../Initial/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons';
 

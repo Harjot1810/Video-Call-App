@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Initial/App.css';
+import '../Initial/App.css';
 import Track from './Track';
 import PanToolOutlinedIcon from '@material-ui/icons/PanToolOutlined';
 import PanToolIcon from '@material-ui/icons/PanTool';

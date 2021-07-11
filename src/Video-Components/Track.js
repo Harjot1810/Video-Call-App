@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Initial/App.css';
+import '../Initial/App.css';
 import PanToolIcon from '@material-ui/icons/PanTool';
 
 
@@ -39,7 +39,6 @@ class Track extends Component {
     render() {
         return (
             <div>
-
                 <div className="track" ref={this.ref}>
                     {this.state.raiseHand ? <div className="raisehand">{
                         <PanToolIcon />

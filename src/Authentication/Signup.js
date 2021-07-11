@@ -37,7 +37,6 @@ function Signup(props) {
                 const res2 = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, { withCredentials: true });
                 setIdentity(res2.data.email);
                 setName(res2.data.name);
-                console.log(res1.data);
                 setScreen(res1.data.isAuth);
                 setsignupError('');
                 setOpenSignup(false);

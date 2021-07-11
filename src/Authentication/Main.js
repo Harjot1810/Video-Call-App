@@ -4,7 +4,7 @@ import App from '../Initial/App';
 import { useStyles } from './Styles.js'
 import Signin from './Signin'
 import Signup from './Signup'
-import Logo from '../Logo.jpg'
+import Logo from '../Pictures/Logo.jpg'
 import axios from 'axios';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
@@ -13,9 +13,9 @@ import Dialog from "@material-ui/core/Dialog";
 function Authentication(props) {
 
     const classes = useStyles(props);
-    const [screen, setScreen] = useState(false);                                            //to load the respective screen accodingle
-    const [identity, setIdentity] = useState('');
-    const [name, setName] = useState('');                                           //store the identity of user
+    const [screen, setScreen] = useState(false);                                            //to load the respective screen accodingly
+    const [identity, setIdentity] = useState('');                                           //store unique email id
+    const [name, setName] = useState('');                                                   //store the name of user
     const [openSignin, setOpenSignin] = useState(false);
     const [openSignup, setOpenSignup] = useState(false);
     const [isLoading, setLoading] = useState(false);
@@ -35,16 +35,10 @@ function Authentication(props) {
     const readCookie = async () => {                                                         //function to read cookies
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, { withCredentials: true });
-            console.log("cook");
-            console.log(screen);
             if (res.data.isAuth === true) {
-                console.log(screen);
                 setIdentity(res.data.email);
                 setName(res.data.name);
                 setScreen(res.data.isAuth);
-                console.log(identity);
-                console.log(res.data);
-
             }
         } catch (e) {
             setScreen(false);
@@ -58,7 +52,7 @@ function Authentication(props) {
 
     return (
 
-        <div className="App">
+        <div className="Main">
             {
                 (screen === false)
                     ? <div className={classes.root}>
@@ -153,7 +147,6 @@ function Authentication(props) {
             }
         </div >
     );
-
 
 }
 

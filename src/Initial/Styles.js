@@ -1,3 +1,4 @@
+import paperImage from '../Pictures/Paper.png'
 
 const drawerWidth = 360;
 
@@ -20,8 +21,6 @@ const styles = theme => ({
         width: drawerWidth,
         flexShrink: 0,
         paddingTop: 60,
-        //backgroundImage: `url(${drawerImage})`
-        // backgroundColor: "#B3B6B7"
     },
     avatar: {
         marginLeft: "40%",
@@ -40,13 +39,30 @@ const styles = theme => ({
         display: 'flex'
     },
     paperleft: {
-        height: "99%"
+        height: "99%",
+        maxHeight: "99%",
+        overflow: 'auto',
+        borderRadius: 20,
+        boxShadow: 40,
+        backgroundImage: `url(${paperImage})`,
+        backgroundSize: 'cover',
+    },
+    paperleftroom: {
+        height: "99%",
+        maxHeight: "99%",
+        overflow: 'auto',
+        borderRadius: 20,
+        backgroundColor: "transparent",
+        boxShadow: "none",
     },
     paperright: {
         height: "99%",
         backgroundColor: "transparent",
         boxShadow: "none"
     },
+    paperrightroom: {
+        height: "99%",
+    }
 });
 
 export { styles };
