@@ -17,7 +17,8 @@ import {
     Backdrop,
     CircularProgress,
     Button,
-    Grid
+    Grid,
+    ListItem
 } from "@material-ui/core";
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -31,10 +32,8 @@ class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoading: false,
             room: null,
             channelName: '',
-            proceed: false,
             loading: false,
             client: null,
             token: null,
@@ -44,10 +43,9 @@ class App extends Component {
         this.nameField = React.createRef();              //creating Reference 
         this.connectCall = this.connectCall.bind(this);  //Invoked to connect to room
         this.backtoHome = this.backtoHome.bind(this);    //Invoked when call is diconnected
-        this.changeState = this.changeState.bind(this);  //Change state of isLoading
         this.changeChannel = this.changeChannel.bind(this);//Change Room id when user enters room name
-        this.changeScreen = this.changeScreen.bind(this);    //change Room name
         this.toggleChat = this.toggleChat.bind(this);
+        this.joinRecent = this.joinRecent.bind(this);
     }
 
     getToken = async () => {
@@ -79,7 +77,6 @@ class App extends Component {
         const client = await Chat.Client.create(token);
 
         const clientChannels = await client.getSubscribedChannels()
-        console.log(clientChannels.items[0].channelState.uniqueName);
         clientChannels.items.map(item =>
             this.setState({
                 channels: [...this.state.channels, item.channelState.uniqueName]
@@ -107,12 +104,20 @@ class App extends Component {
         this.setState({
             showChat: !this.state.showChat
         });
+        console.log(this.state.channelName)
+    }
+
+    joinRecent(channel) {
+        this.setState({
+            channelName: channel,
+            showChat: true
+        });
     }
 
     async connectCall() {
         try {
             this.setState({
-                isLoading: true,
+                loading: true,
             });
 
             const room = await connect(this.state.token, {
@@ -127,7 +132,7 @@ class App extends Component {
             const dataTrack = new LocalDataTrack();
             await room.localParticipant.publishTrack(dataTrack);
 
-            this.setState({ room: room });
+            this.setState({ room: room, loading: false });
         } catch (err) {
             console.log(err);
         }
@@ -139,22 +144,6 @@ class App extends Component {
 
     backtoHome() {                          //invoked when user clicks Leave call button
         this.setState({ room: null });
-        this.setState({
-            isLoading: false,
-        });
-    }
-
-    changeState() {                         //update isLoading state
-        this.setState({
-            isLoading: true,
-
-        });
-    }
-
-    changeScreen() {                          //update isLoading state
-        this.setState({
-            proceed: true,
-        });
     }
 
     changeChannel(event) {                   //update room when user has entered roomname
@@ -170,6 +159,9 @@ class App extends Component {
             <div className="app">
                 <div className={classes.root}>
                     <CssBaseline />
+                    <Backdrop open={this.state.loading} style={{ zIndex: 99999 }}>
+                        <CircularProgress style={{ color: "white" }} />
+                    </Backdrop>
                     <Grid container spacing={1}>
                         <Grid item xs={this.state.room === null ? 3 : 9} justify="center"
                             alignItems="center">
@@ -198,9 +190,21 @@ class App extends Component {
                                                 />
                                                 <br />
                                                 <button className="standard-button" disabled={disabled} onClick={this.toggleChat}>Join</button>
-                                                <Backdrop open={this.state.loading} style={{ zIndex: 99999 }}>
-                                                    <CircularProgress style={{ color: "white" }} />
-                                                </Backdrop>
+                                            </List>
+                                            <Divider />
+                                            <List style={{ maxHeight: 280, overflow: 'auto' }}>
+                                                <h2 className="mt-2">Recents</h2>
+                                                {
+                                                    this.state.channels.length > 0 ?
+                                                        this.state.channels.map(channel =>
+                                                            <ListItem button onClick={() => this.joinRecent(channel)}>
+                                                                <Typography variant="h6">{channel}</Typography>
+                                                                <Divider />
+                                                            </ListItem>
+                                                        )
+
+                                                        : <h4 className="mt-2">No recent conversations</h4>
+                                                }
                                             </List>
                                             <Divider />
                                             <List>
@@ -223,29 +227,34 @@ class App extends Component {
                                                         startIcon={<VideoCallIcon />}
                                                         variant="contained"
                                                         color="primary"
-                                                        style={{ backgroundColor: "#262d31", borderWidth: 3, }}>
+                                                        style={{ backgroundColor: "#262d31", borderWidth: 3, marginLeft: 120 }}>
                                                         Join Video
                                                     </Button>
+                                                </List><List>
                                                     <Button
                                                         onClick={this.toggleChat}
                                                         startIcon={<ExitToAppIcon />}
                                                         variant="contained"
                                                         color="primary"
-                                                        style={{ backgroundColor: "#262d31", borderWidth: 3, }}>
+                                                        style={{ backgroundColor: "#ff0000", borderWidth: 3, marginLeft: 100 }}>
                                                         Leave Channel
                                                     </Button>
                                                 </List>
                                                 <Divider />
-                                                <List>
+                                                <List style={{ maxHeight: 280, overflow: 'auto' }}>
                                                     <h2 className="mt-2">Recents</h2>
                                                     {
-                                                        this.state.channels.map(channel =>
-                                                            <List>
-                                                                <Typography variant="h6">{channel}</Typography>
-                                                                <Divider />
-                                                            </List>
-                                                        )
+                                                        this.state.channels.length > 0 ?
+                                                            this.state.channels.map(channel =>
+                                                                <ListItem button onClick={() => this.joinRecent(channel)}>
+                                                                    <Typography variant="h6">{channel}</Typography>
+                                                                    <Divider />
+                                                                </ListItem>
+                                                            )
+
+                                                            : <h4 className="mt-2">No recent conversations</h4>
                                                     }
+
                                                 </List>
                                                 <Divider />
                                                 <List>
@@ -270,7 +279,6 @@ class App extends Component {
                                         room={this.state.channelName}
                                         identity={this.props.identity}
                                         connectCall={this.connectCall}
-                                        isLoading={this.state.isLoading}
                                         client={this.state.client}
                                         video={this.state.room} />
                                 }

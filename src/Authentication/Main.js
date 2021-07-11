@@ -38,10 +38,10 @@ function Authentication(props) {
             console.log("cook");
             console.log(screen);
             if (res.data.isAuth === true) {
-                setScreen(res.data.isAuth);
                 console.log(screen);
                 setIdentity(res.data.email);
                 setName(res.data.name);
+                setScreen(res.data.isAuth);
                 console.log(identity);
                 console.log(res.data);
 
