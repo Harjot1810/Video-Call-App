@@ -253,9 +253,9 @@ class Room extends Component {
                         style={this.state.setChatOpen ? styles.shiftTextLeft : styles.shiftTextRight}>
 
                         <div style={styles.div}>
-                            <Paper style={styles.paperLeft}>
-                                <div className="participants">
 
+                            <Grid container>
+                                <Grid item>
                                     <Attendee key={this.props.room.localParticipant.identity}
                                         dominantSpeaker={this.state.dominantSpeaker}
                                         localParticipant="true"
@@ -263,9 +263,10 @@ class Room extends Component {
                                         pushMessage={this.pushMessage}
                                         id={this.props.room.localParticipant.identity}
                                     />
-
-                                    {
-                                        this.state.attendeesList.map(attendee =>
+                                </Grid>
+                                {
+                                    this.state.attendeesList.map(attendee =>
+                                        <Grid item>
                                             <Attendee key={attendee.identity}
                                                 dominantSpeaker={this.state.dominantSpeaker}
                                                 attendee={attendee}
@@ -273,11 +274,11 @@ class Room extends Component {
                                                 id={attendee.identity}
                                                 snackBar={this.handleSnackbar}
                                                 changeSnackbarmessage={this.changeSnackbarmessage} />
-                                        )
-                                    }
+                                        </Grid>
+                                    )
+                                }
+                            </Grid>
 
-                                </div>
-                            </Paper>
                         </div>
                     </main>
                 </Grid>
