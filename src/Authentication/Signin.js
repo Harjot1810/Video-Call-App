@@ -12,7 +12,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
-import { SettingsSystemDaydreamRounded } from '@material-ui/icons';
 
 function Signin(props) {
 

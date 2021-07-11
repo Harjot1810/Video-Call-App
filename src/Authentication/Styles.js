@@ -38,8 +38,8 @@ const useStyles = makeStyles((theme) => ({
     },
     mainbutton: {
         position: 'relative',
-        height: "20%",
-        width: "40%",
+        height: "17%",
+        width: "41%",
         [theme.breakpoints.down('xs')]: {
             width: '100% !important',          // Overrides inline-style
             height: 100,

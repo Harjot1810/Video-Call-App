@@ -5,7 +5,6 @@ import { useStyles } from './Styles.js'
 import Signin from './Signin'
 import Signup from './Signup'
 import Logo from '../Logo.jpg'
-import Login from './login.png'
 import axios from 'axios';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
@@ -38,7 +37,6 @@ function Authentication(props) {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, { withCredentials: true });
             console.log("cook");
             console.log(screen);
-            //setScreen(res.data.isAuth);
             if (res.data.isAuth === true) {
                 setScreen(res.data.isAuth);
                 console.log(screen);
@@ -66,7 +64,7 @@ function Authentication(props) {
                     ? <div className={classes.root}>
 
                         <div className={classes.logo}>
-                            <img src={Logo} height="100%" width="55%" />
+                            <img src={Logo} height="100%" width="55%" alt="" />
                         </div>
 
                         <ButtonBase

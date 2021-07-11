@@ -7,13 +7,10 @@ import AudioControl from './AudioControl';
 import VideoControl from './VideoControl';
 import { Paper, Grid } from "@material-ui/core";
 import CallEndIcon from '@material-ui/icons/CallEnd';
-import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
 import AppBar from '@material-ui/core/AppBar';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
-import ChatIcon from '@material-ui/icons/Chat';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -27,7 +24,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Avatar from '@material-ui/core/Avatar';
-import ChatScreen from './Chat-Components/ChatScreen';
 
 class Room extends Component {
 
@@ -158,35 +154,12 @@ class Room extends Component {
             appbar: {
                 zIndex: 2000,
                 background: '#2E3B55',
-                width: `calc(100% - 360px)`,
                 marginRight: 360,
+                background: '#008B8B'
 
-            },
-            paperLeft: {
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-                flex: 4,
-                height: '100%',
-                margin: 10,
-                textAlign: 'center',
-                padding: 10
-            },
-            paperRight: {
-                height: 600,
-                flex: 1,
-                margin: 10,
-                textAlign: 'center',
             },
             root: {
                 flexGrow: 1,
-            },
-            drawer: {
-                width: 340,
-                flexShrink: 0,
-                backgroundImage: `url("./bb-background2.png")`
-            },
-            drawerPaper: {
-                width: 340,
             },
             title: {
                 flexGrow: 1,
@@ -195,35 +168,6 @@ class Room extends Component {
             toolbarButtons: {
                 marginLeft: 'auto',
 
-            },
-            shiftTextLeft: {
-                marginRight: 340,
-                display: 'flex',
-                flexDirection: 'row wrap',
-                padding: 20,
-                width: '100%'
-            },
-            shiftTextRight: {
-                marginRight: 0,
-                display: 'flex',
-                flexDirection: 'row wrap',
-                padding: 20,
-                width: '100%'
-            },
-            drawerHeader: {
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-            },
-            appBarShift: {
-                width: `calc(100% - ${340}px)`,
-                marginRight: 340,
-                background: '#2E3B55',
-            },
-            drawerContainer: {
-                overflow: 'auto',
-                paddingTop: 60,
-                width: 340,
             },
         };
 

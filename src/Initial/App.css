@@ -263,7 +263,7 @@ input {
   font-family: Roboto, Arial, sans-serif;
   font-weight: bold;
   height: 90vmin;
-  left: 35%;
+  left: 50%;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -276,7 +276,7 @@ input {
   width: 100%;
 }
 .animated-title > div div {
-  font-size: 6vmin;
+  font-size: 7vmin;
   padding: 2vmin 0;
   position: absolute;
 }

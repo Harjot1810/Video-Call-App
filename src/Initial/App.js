@@ -7,7 +7,6 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -15,14 +14,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 import {
-    AppBar,
-    Toolbar,
     Backdrop,
     CircularProgress,
     Button,
     Grid
 } from "@material-ui/core";
-import Logo from '../logoinverted.jpg'
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 import { styles } from './Styles.js'
 const { connect, LocalDataTrack } = require('twilio-video'); //Importing twilio-javascript SDK and Data API
@@ -43,7 +39,6 @@ class App extends Component {
             token: null,
             channels: []
         }
-        console.log(this.props.identity);
         this.nameField = React.createRef();              //creating Reference 
         this.connectCall = this.connectCall.bind(this);  //Invoked to connect to room
         this.backtoHome = this.backtoHome.bind(this);    //Invoked when call is diconnected
@@ -109,7 +104,6 @@ class App extends Component {
 
     async connectCall() {
         try {
-            const identity = this.props.identity
             this.setState({
                 isLoading: true,
             });
@@ -166,76 +160,93 @@ class App extends Component {
                 <div className={classes.root}>
                     <CssBaseline />
                     <Grid container spacing={1}>
-                        <Grid item xs={9} justify="center"
+                        <Grid item xs={this.state.room === null ? 3 : 9} justify="center"
                             alignItems="center">
-                            <Paper className={classes.paper}>
+                            <Paper className={classes.paperleft}>
                                 {
                                     this.state.client === null
-                                        ? <div>
-                                            <Welcome name={this.props.name} />
-                                        </div>
+                                        ? <div style={{ paddingTop: 70 }}><List>
+                                            <Avatar className={classes.avatar}>
+                                                {this.props.name.charAt(0)}
+                                            </Avatar>
+                                            <h2>{this.props.name}</h2>
+                                        </List>
+                                            <Divider />
+                                            <List>
+                                                <h2 className="mt-2">Fill the channel name to join</h2>
+                                                <TextField
+                                                    style={{ marginLeft: 80, marginBottom: 20 }}
+                                                    variant="outlined"
+                                                    required
+                                                    name="channel name"
+                                                    label="Channel Name"
+                                                    type="name"
+                                                    id="name"
+                                                    onChange={this.changeChannel}
+                                                />
+                                                <br />
+                                                <button className="standard-button" disabled={disabled} onClick={this.connectChat}>Join</button>
+                                                <Backdrop open={this.state.loading} style={{ zIndex: 99999 }}>
+                                                    <CircularProgress style={{ color: "white" }} />
+                                                </Backdrop>
+                                            </List>
+                                            <Divider />
+                                            <List>
+                                                <button className="standard-button" onClick={e => this.props.logout(e)}>Logout</button>
+                                            </List></div>
+
                                         : this.state.room === null
-                                            ?
-                                            <Grid item xs={12} >
-                                                <Grid container justify="center" spacing={2} direction="column"
-                                                    justifyContent="center"
-                                                    alignItems="center">
-
-                                                    <Avatar className={classes.avatar}>
-                                                        {this.props.name.charAt(0)}
-                                                    </Avatar>
-                                                    <h2>{this.props.name}</h2>
-                                                    <Button
-                                                        onClick={this.connectCall}
-                                                        startIcon={<VideoCallIcon />}
-                                                        variant="contained"
-                                                        color="primary"
-                                                        style={{ backgroundColor: "#262d31", borderWidth: 3, marginTop: 70 }}>
-                                                        Join Video
-                                                    </Button>
-
-                                                    <Grid container justify="center" spacing={2} direction="row"
-                                                        justifyContent="center"
-                                                        alignItems="center" justifyContent="flex-start">
-                                                        <Grid item>
-                                                            <Paper className={classes.paper}>
-                                                                <br />
-                                                                <h2 className="mt-2">Fill the channel name to join</h2>
-                                                                <TextField
-                                                                    style={{ marginLeft: 150 }}
-                                                                    margin="normal"
-                                                                    variant="outlined"
-                                                                    required
-                                                                    name="channel name"
-                                                                    label="Channel Name"
-                                                                    type="name"
-                                                                    id="name"
-                                                                    onChange={this.changeChannel}
-                                                                />
-                                                                <br /><br /><br /><br />
-                                                                <button className="standard-button" onClick={this.connectChat}>Join</button>
-
-                                                            </Paper>
-                                                        </Grid>
-                                                        <Grid item>
-                                                            <Paper className={classes.paper}>
-                                                                <br />
-                                                                <h2 className="mt-2">Recents</h2>
-                                                                {
-                                                                    this.state.channels.map(channel =>
-                                                                        <List>
-                                                                            <Typography variant="h6">{channel}</Typography>
-                                                                            <Divider />
-                                                                        </List>
-                                                                    )
-                                                                }
-
-                                                            </Paper>
-                                                        </Grid>
-                                                    </Grid>
+                                            ? <div style={{ paddingTop: 70 }}><List>
+                                                <Avatar className={classes.avatar}>
+                                                    {this.props.name.charAt(0)}
+                                                </Avatar>
+                                                <h2>{this.props.name}</h2>
+                                                <br />
+                                                <Button
+                                                    onClick={this.connectCall}
+                                                    startIcon={<VideoCallIcon />}
+                                                    variant="contained"
+                                                    color="primary"
+                                                    style={{ backgroundColor: "#262d31", borderWidth: 3, }}>
+                                                    Join Video
+                                                </Button>
+                                            </List>
+                                                <Divider />
+                                                <List>
+                                                    <h2 className="mt-2">Fill the channel name to join</h2>
+                                                    <TextField
+                                                        style={{ marginLeft: 80, marginBottom: 20 }}
+                                                        variant="outlined"
+                                                        required
+                                                        name="channel name"
+                                                        label="Channel Name"
+                                                        type="name"
+                                                        id="name"
+                                                        onChange={this.changeChannel}
+                                                    />
+                                                    <br />
+                                                    <button className="standard-button" disabled={disabled} onClick={this.connectChat}>Join</button>
+                                                    <Backdrop open={this.state.loading} style={{ zIndex: 99999 }}>
+                                                        <CircularProgress style={{ color: "white" }} />
+                                                    </Backdrop>
+                                                </List>
+                                                <Divider />
+                                                <List>
+                                                    <h2 className="mt-2">Recents</h2>
+                                                    {
+                                                        this.state.channels.map(channel =>
+                                                            <List>
+                                                                <Typography variant="h6">{channel}</Typography>
+                                                                <Divider />
+                                                            </List>
+                                                        )
+                                                    }
+                                                </List>
+                                                <Divider />
+                                                <List>
                                                     <button className="standard-button" onClick={e => this.props.logout(e)}>Logout</button>
-                                                </Grid>
-                                            </Grid>
+                                                </List></div>
+
                                             : <Room
                                                 backtoHome={this.backtoHome}
                                                 room={this.state.room}
@@ -244,38 +255,12 @@ class App extends Component {
 
                             </Paper>
                         </Grid>
-                        <Grid em xs={3}>
-                            <Paper className={classes.paper}>
+                        <Grid em xs={this.state.room === null ? 9 : 3}>
+                            <Paper className={classes.paperright}>
                                 {this.state.client === null
-                                    ? <div style={{ paddingTop: 70 }}><List>
-                                        <Avatar className={classes.avatar}>
-                                            {this.props.name.charAt(0)}
-                                        </Avatar>
-                                        <h2>{this.props.name}</h2>
-                                    </List>
-                                        <Divider />
-                                        <List>
-                                            <h2 className="mt-2">Fill the channel name to join</h2>
-                                            <TextField
-                                                style={{ marginLeft: 80, marginBottom: 20 }}
-                                                variant="outlined"
-                                                required
-                                                name="channel name"
-                                                label="Channel Name"
-                                                type="name"
-                                                id="name"
-                                                onChange={this.changeChannel}
-                                            />
-                                            <br />
-                                            <button className="standard-button" disabled={disabled} onClick={this.connectChat}>Join</button>
-                                            <Backdrop open={this.state.loading} style={{ zIndex: 99999 }}>
-                                                <CircularProgress style={{ color: "white" }} />
-                                            </Backdrop>
-                                        </List>
-                                        <Divider />
-                                        <List>
-                                            <button className="standard-button" onClick={e => this.props.logout(e)}>Logout</button>
-                                        </List></div>
+                                    ? <div>
+                                        <Welcome name={this.props.name} />
+                                    </div>
                                     : <ChatScreen
                                         room={this.state.channelName}
                                         identity={this.props.identity}
@@ -283,7 +268,6 @@ class App extends Component {
                                         isLoading={this.state.isLoading}
                                         client={this.state.client}
                                         video={this.state.room} />
-
                                 }
                             </Paper>
                         </Grid>

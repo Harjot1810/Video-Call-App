@@ -1,6 +1,6 @@
 import './Initial/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faMicrophoneSlash, faVideo, faVideoSlash } from '@fortawesome/free-solid-svg-icons';
+import { faVideo, faVideoSlash } from '@fortawesome/free-solid-svg-icons';
 
 
 function VideoControl(props) {

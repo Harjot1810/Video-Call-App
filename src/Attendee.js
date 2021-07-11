@@ -42,7 +42,7 @@ class Attendee extends Component {
 
     changeraiseHand() {
         console.log(this.state.raiseHand)
-        const dataTrack = this.state.tracks.find(track => track.kind == "data");
+        const dataTrack = this.state.tracks.find(track => track.kind === "data");
         dataTrack.send(!this.state.raiseHand);
         this.setState({ raiseHand: !this.state.raiseHand });
     }

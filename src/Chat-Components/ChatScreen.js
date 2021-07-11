@@ -1,24 +1,15 @@
 import React from "react";
 import {
-    AppBar,
-    Backdrop,
-    CircularProgress,
     Container,
     CssBaseline,
     Grid,
     IconButton,
     List,
     TextField,
-    Toolbar,
-    Typography,
-    Button
 } from "@material-ui/core";
 import '../Initial/App.css'
 import { Send } from "@material-ui/icons";
-import axios from "axios";
 import ChatItem from "./ChatItem";
-import Logo from '../logoinverted.jpg'
-import VideoCallIcon from '@material-ui/icons/VideoCall';
 const Chat = require("twilio-chat");
 
 class ChatScreen extends React.Component {
@@ -76,41 +67,6 @@ class ChatScreen extends React.Component {
         const room = this.props.room
         const identity = this.props.identity
         const client = this.props.client
-        /*let token = "";
-
-        if (!identity || !room) {
-            this.props.history.replace("/");
-        }
-
-        this.setState({ loading: true });
-
-        try {
-            token = await this.getToken(identity);
-        } catch {
-            throw new Error("Unable to get token, please reload this page");
-        }
-
-        const client = await Chat.Client.create(token);
-
-        const clientChannels = await client.getSubscribedChannels()
-        console.log(clientChannels)
-
-        client.on("tokenAboutToExpire", async () => {
-            const token = await this.getToken(identity);
-            client.updateToken(token);
-        });
-
-        client.on("tokenExpired", async () => {
-            const token = await this.getToken(identity);
-            client.updateToken(token);
-        });*/
-
-        /*client.on("channelJoined", async (channel) => {
-            // getting list of all messages since this is an existing channel
-            const messages = await channel.getMessages();
-            this.setState({ messages: messages.items || [] });
-            this.scrollToBottom();
-        });*/
 
         try {
             const channel = await client.getChannelByUniqueName(room);
@@ -138,12 +94,6 @@ class ChatScreen extends React.Component {
             this.setState({ text: "", loading: false });
         }
     };
-
-    /*getToken = async (identity) => {
-        const response = await axios.get(`http://localhost:4000/api/token`, { withCredentials: true });
-        const { data } = response;
-        return data.accessToken;
-    }*/
 
     render() {
         const { loading, text, messages, channel } = this.state;
