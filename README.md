@@ -7,6 +7,7 @@ How to Run?
 ->Run the following commands in project directory
 
 npm install
+
 npm run dev
 
 
