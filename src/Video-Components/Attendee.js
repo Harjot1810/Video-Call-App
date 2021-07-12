@@ -41,7 +41,6 @@ class Attendee extends Component {
     }
 
     changeraiseHand() {
-        console.log(this.state.raiseHand)
         const dataTrack = this.state.tracks.find(track => track.kind === "data");
         dataTrack.send(!this.state.raiseHand);
         this.setState({ raiseHand: !this.state.raiseHand });
@@ -58,8 +57,16 @@ class Attendee extends Component {
                             ? <div>
 
                                 {this.state.raiseHand === false
-                                    ? <IconButton onClick={this.changeraiseHand} style={{ color: "white" }}><PanToolOutlinedIcon /> </IconButton>
-                                    : <IconButton onClick={this.changeraiseHand} style={{ color: "white" }}><PanToolIcon /></IconButton>
+                                    ? <IconButton aria-label="raise hand"
+                                        onClick={this.changeraiseHand}
+                                        style={{ color: "white" }}>
+                                        <PanToolOutlinedIcon />
+                                    </IconButton>
+                                    : <IconButton aria-label="raise hand"
+                                        onClick={this.changeraiseHand}
+                                        style={{ color: "white" }}>
+                                        <PanToolIcon />
+                                    </IconButton>
                                 }
                             </div>
 

@@ -1,7 +1,6 @@
 import React from "react";
 import {
     Container,
-    CssBaseline,
     Grid,
     IconButton,
     List,
@@ -10,7 +9,6 @@ import {
 import '../Initial/App.css'
 import { Send } from "@material-ui/icons";
 import ChatItem from "./ChatItem";
-const Chat = require("twilio-chat");
 
 class ChatScreen extends React.Component {
     constructor(props) {
@@ -68,6 +66,9 @@ class ChatScreen extends React.Component {
         this.setState({
             loading: true
         });
+
+        this.state.channel?.removeAllListeners()
+
         const room = this.props.room
         const client = this.props.client
 
@@ -109,14 +110,14 @@ class ChatScreen extends React.Component {
     };
 
     render() {
-        const { loading, text, messages, channel } = this.state;
-        const { identity, room } = this.props;
+        const { text, messages, channel } = this.state;
+        const { identity } = this.props;
 
         return (
             <Container component="main" maxWidth="md">
 
-                <Grid container direction="column" style={styles.mainGrid}>
-                    <Grid item style={styles.gridItemChatList} ref={this.scrollDiv}>
+                <Grid container direction="column" style={styles.mainGrid} >
+                    <Grid item style={styles.gridItemChatList} ref={this.scrollDiv} tabIndex="0">
                         <List dense={true}>
                             {messages &&
                                 messages.map((message) =>
@@ -152,6 +153,7 @@ class ChatScreen extends React.Component {
 
                             <Grid item>
                                 <IconButton
+                                    aria-label="send"
                                     style={styles.sendButton}
                                     onClick={this.sendMessage}
                                     disabled={!channel}>

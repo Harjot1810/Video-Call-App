@@ -18,7 +18,6 @@ function Authentication(props) {
     const [name, setName] = useState('');                                                   //store the name of user
     const [openSignin, setOpenSignin] = useState(false);
     const [openSignup, setOpenSignup] = useState(false);
-    const [isLoading, setLoading] = useState(false);
 
     const deleteCookie = async (e) => {                                                     //function to logout and delete cookies
         try {
@@ -26,7 +25,6 @@ function Authentication(props) {
             console.log("logout");
             await axios.get(`${process.env.REACT_APP_API_URL}/api/logout`, { withCredentials: true });
             setScreen(false);
-            setLoading(false);
         } catch (e) {
             console.log(e);
         }

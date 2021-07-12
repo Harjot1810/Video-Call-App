@@ -17,3 +17,5 @@ A microsoft teams clone app made with create react app. This project has folowin
     -> Multiple participants
     -> Raise hand and notifications on raise hand
 
+The app also passes the automatic accessibility tests of the pastpass tool of Accessibility Insights for Web - Microsoft Edge Addons 
+

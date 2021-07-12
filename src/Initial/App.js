@@ -55,7 +55,6 @@ class App extends Component {
     }
 
     componentDidMount = async () => {
-        const room = this.state.channelName
         const identity = this.props.identity
         let token = "";
 
@@ -163,7 +162,7 @@ class App extends Component {
                         <CircularProgress style={{ color: "white" }} />
                     </Backdrop>
 
-                    <Grid container spacing={1}>
+                    <Grid container spacing={1} justify="center" alignItems="center" >
                         <Grid item xs={this.state.room === null ? 3 : 9} >
                             <Paper className={this.state.room === null ? classes.paperleft : classes.paperleftroom} >
                                 {
@@ -181,13 +180,13 @@ class App extends Component {
 
                                             <List>
                                                 <li>
-                                                    <h2 className="mt-2">Fill the channel name to join</h2>
+                                                    <h2 className="mt-2">Create new channel here</h2>
                                                     <TextField
-                                                        style={{ marginLeft: 80, marginBottom: 20 }}
+                                                        style={{ marginLeft: "20%", marginBottom: 20 }}
                                                         variant="outlined"
                                                         required
                                                         name="channel name"
-                                                        label="Channel Name"
+                                                        label="Enter Channel Name"
                                                         type="name"
                                                         id="name"
                                                         value={this.state.channelName}
@@ -204,8 +203,8 @@ class App extends Component {
                                                     <h2 className="mt-2">Recents</h2>
                                                     {
                                                         this.state.channels.length > 0 ?
-                                                            this.state.channels.map(channel =>
-                                                                <ListItem button onClick={() => this.joinRecent(channel)}>
+                                                            this.state.channels.map((channel, id) =>
+                                                                <ListItem key={id} button onClick={() => this.joinRecent(channel)}>
                                                                     <Typography variant="h6">{channel}</Typography>
                                                                     <Divider />
                                                                 </ListItem>
@@ -245,7 +244,7 @@ class App extends Component {
                                                             startIcon={<VideoCallIcon />}
                                                             variant="contained"
                                                             color="primary"
-                                                            style={{ backgroundColor: "#262d31", borderWidth: 3, marginLeft: 120 }}>
+                                                            style={{ backgroundColor: "#262d31", borderWidth: 3, marginLeft: "30%" }}>
                                                             Join Video
                                                         </Button>
                                                     </li>
@@ -257,7 +256,7 @@ class App extends Component {
                                                             startIcon={<ExitToAppIcon />}
                                                             variant="contained"
                                                             color="primary"
-                                                            style={{ backgroundColor: "#262d31", borderWidth: 3, marginLeft: 100 }}>
+                                                            style={{ backgroundColor: "#262d31", borderWidth: 3, marginLeft: "25%" }}>
                                                             Leave Channel
                                                         </Button>
                                                     </li>
@@ -269,8 +268,8 @@ class App extends Component {
                                                         <h2 className="mt-2">Recents</h2>
                                                         {
                                                             this.state.channels.length > 0 ?
-                                                                this.state.channels.map(channel =>
-                                                                    <ListItem button onClick={() => this.joinRecent(channel)}>
+                                                                this.state.channels.map((channel, id) =>
+                                                                    <ListItem key={id} button onClick={() => this.joinRecent(channel)}>
                                                                         <Typography variant="h6">{channel}</Typography>
                                                                         <Divider />
                                                                     </ListItem>

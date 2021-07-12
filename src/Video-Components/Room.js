@@ -10,12 +10,12 @@ import {
     AppBar,
     Avatar,
     Badge,
+    Box,
     Button,
     CssBaseline,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
     Divider,
     Grid,
@@ -153,19 +153,12 @@ class Room extends Component {
                 padding: 20,
                 width: '100%',
             },
-            appbar: {
-                zIndex: 2000,
-                background: '#2E3B55',
-                marginRight: 360,
-                background: '#008B8B'
-
-            },
             root: {
                 flexGrow: 1,
             },
             title: {
                 flexGrow: 1,
-                marginLeft: 10
+                marginLeft: 10,
             },
             toolbarButtons: {
                 marginLeft: 'auto',
@@ -179,20 +172,22 @@ class Room extends Component {
                 <CssBaseline />
 
                 <Grid id="appbar" style={styles.root}>
-                    <AppBar position="fixed" style={styles.appbar} style={{ zIndex: 1401, background: '#008B8B' }}>
+                    <AppBar position="fixed" style={{ zIndex: 1401, background: '#008B8B' }}>
                         <Toolbar variant="dense">
                             <img src={Logo} height="15%" width="4%" alt="" />
                             <Typography variant="h6" style={styles.title}>
-                                Video Room
+                                <Box fontWeight="fontWeightBold" m={1}>
+                                    Video Room
+                                </Box>
                             </Typography>
 
                             <div style={styles.toolbarButtons}>
 
                                 <Tooltip title="Microphone" arrow>
-                                    <IconButton color="inherit">
+                                    <IconButton color="inherit" aria-label="Mic">
                                         {
                                             this.state.tracks.map((track, track_id) =>
-                                                track && track.kind == 'audio'
+                                                track && track.kind === 'audio'
                                                     ?
                                                     <AudioControl key={track_id}
                                                         changeAudio={this.changeAudio}
@@ -205,10 +200,10 @@ class Room extends Component {
                                 </Tooltip>
 
                                 <Tooltip title="Video" arrow>
-                                    <IconButton color="inherit">
+                                    <IconButton color="inherit" aria-label="Video">
                                         {
                                             this.state.tracks.map((track, track_id) =>
-                                                track && track.kind == 'video'
+                                                track && track.kind === 'video'
                                                     ?
                                                     <VideoControl key={track_id}
                                                         changeVideo={this.changeVideo}
@@ -221,13 +216,13 @@ class Room extends Component {
                                 </Tooltip>
 
                                 <Tooltip title="Leave Call" arrow>
-                                    <IconButton color="secondary" variant="fab" onClick={this.disconnectCall}>
+                                    <IconButton color="secondary" variant="fab" onClick={this.disconnectCall} aria-label="call end">
                                         <CallEndIcon fontSize="large" />
                                     </IconButton>
                                 </Tooltip>
 
                                 <Tooltip title="Participants" arrow>
-                                    <IconButton
+                                    <IconButton aria-label="participants"
                                         color="inherit"
                                         onClick={this.handleAttendeesDialog}>
                                         <Badge badgeContent={this.state.attendeesList.length} color="primary">
@@ -297,31 +292,28 @@ class Room extends Component {
                         </DialogTitle>
 
                         <DialogContent>
-                            <DialogContentText
-                                id="scroll-dialog-description"
-                                tabIndex={-1}>
-                                <Grid container>
-                                    {
-                                        this.state.attendeesList.map(attendee =>
-                                            <List>
-                                                <Grid item>
-                                                    <Avatar
-                                                        variant="rounded"
-                                                        style={{ backgroundColor: "Blue" }}>
-                                                        {attendee.identity.charAt(0)}
-                                                    </Avatar>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography variant="h6">
-                                                        {attendee.identity}
-                                                    </Typography>
-                                                </Grid>
-                                                <Divider />
-                                            </List>
-                                        )
-                                    }
-                                </Grid>
-                            </DialogContentText>
+                            <Grid container>
+                                {
+                                    this.state.attendeesList.map((attendee, id) =>
+                                        <List key={id}>
+                                            <Grid item>
+                                                <Avatar
+                                                    variant="rounded"
+                                                    style={{ backgroundColor: "Blue" }}>
+                                                    {attendee.identity.charAt(0)}
+                                                </Avatar>
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant="h6">
+                                                    {attendee.identity}
+                                                    <br />
+                                                </Typography>
+                                            </Grid>
+                                            <Divider />
+                                        </List>
+                                    )
+                                }
+                            </Grid>
                         </DialogContent>
 
                         <DialogActions>

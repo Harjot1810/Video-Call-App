@@ -31,7 +31,7 @@ const styles = {
         padding: 16,
         color: "black",
         fontSize: 14,
-        backgroundColor: isOwnMessage ? "#16A085" : "#BDC3C7",
+        backgroundColor: isOwnMessage ? "#66CDAA" : "#BDC3C7",
     }),
     author: { fontSize: 12, color: "black" },
     timestamp: { fontSize: 8, color: "black", textAlign: "right", paddingTop: 4 },
